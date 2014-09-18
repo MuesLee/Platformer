@@ -19,6 +19,8 @@ public class MenuState extends AbstractGameState
 
 	private String[] menuItems = { "Start", "Exit" };
 
+	private int selectedMenuItem = 0;
+
 	public MenuState(GameStateManager manager)
 	{
 		super(manager);
@@ -57,10 +59,16 @@ public class MenuState extends AbstractGameState
 	private void drawMenu(Graphics2D g)
 	{
 		g.setFont(font);
-		g.setColor(color);
 
 		for (int i = 0; i < menuItems.length; i++)
 		{
+			g.setColor(color);
+
+			if (i == selectedMenuItem)
+			{
+				g.setColor(Color.red);
+			}
+
 			g.drawString(menuItems[i], 100, 100 + i * 20);
 		}
 	}
