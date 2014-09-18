@@ -34,6 +34,7 @@ public class GameController implements ClockListener
 		players = new ArrayList<Player>();
 
 		Player playerOne = new Player();
+		playerOne.setName("Player One");
 		players.add(playerOne);
 
 		keyBindings.setPlayerOne(playerOne);
