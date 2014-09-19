@@ -78,8 +78,8 @@ public class TileMap {
 
 		try {
 
-			numCols = Integer.parseInt(br.readLine());
 			numRows = Integer.parseInt(br.readLine());
+			numCols = Integer.parseInt(br.readLine());
 			map = new int[numRows][numCols];
 			width = numCols * tileSize;
 			height = numRows * tileSize;
@@ -127,7 +127,7 @@ public class TileMap {
 					continue;
 
 				tileNumber = map[row][col];
-				g2d.drawImage(getImageForTileNumber(tileNumber), x + col
+				g2d.drawImage(getImageForTileNumber(tileNumber - 1), x + col
 						* tileSize, y + row * tileSize, null);
 			}
 		}

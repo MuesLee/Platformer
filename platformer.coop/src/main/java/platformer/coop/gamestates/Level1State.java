@@ -29,12 +29,12 @@ public class Level1State extends AbstractGameState {
 	@Override
 	public void init() {
 		final Background background = new Background(
-				"Tiles/Background/background_night.jpg", 1);
+				"Tiles/Background/background_day_clouds.jpg", 1);
 		background.setVector(5, 0);
 		setBackground(background);
 
 		tileMap = new TileMap(30);
-		tileMap.loadTiles("Tiles/generic_platformer_tiles.png");
+		tileMap.loadTiles("Tiles/grass_flowers_30.png");
 		tileMap.loadMap("Maps/level1.map");
 		tileMap.setPosition(0, 0);
 
