@@ -3,13 +3,16 @@ package platformer.coop.gamestates;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import platformer.coop.controller.GameController;
 import platformer.coop.controller.GameStateManager;
+import platformer.coop.controls.KeyBindings;
+import platformer.coop.entities.Player;
 import platformer.coop.tilemap.Background;
 
-public class MenuState extends AbstractGameState
-{
+public class MenuState extends AbstractGameState implements KeyListener {
 
 	private Font titleFont;
 	private Font font;
@@ -21,8 +24,7 @@ public class MenuState extends AbstractGameState
 
 	private int selectedMenuItem = 0;
 
-	public MenuState(GameStateManager manager)
-	{
+	public MenuState(GameStateManager manager) {
 		super(manager);
 
 		titleFont = new Font("Showcard Gothic", Font.BOLD, 64);
@@ -33,15 +35,12 @@ public class MenuState extends AbstractGameState
 	}
 
 	@Override
-	public void update()
-	{
+	public void update() {
 		super.getBackground().update();
-
 	}
 
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		super.getBackground().draw(g);
 
 		drawTitle(g);
@@ -49,23 +48,19 @@ public class MenuState extends AbstractGameState
 
 	}
 
-	private void drawTitle(Graphics2D g)
-	{
+	private void drawTitle(Graphics2D g) {
 		g.setFont(titleFont);
 		g.setColor(titleColor);
 		g.drawString(GameController.GAME_TITLE, 10, 50);
 	}
 
-	private void drawMenu(Graphics2D g)
-	{
+	private void drawMenu(Graphics2D g) {
 		g.setFont(font);
 
-		for (int i = 0; i < menuItems.length; i++)
-		{
+		for (int i = 0; i < menuItems.length; i++) {
 			g.setColor(color);
 
-			if (i == selectedMenuItem)
-			{
+			if (i == selectedMenuItem) {
 				g.setColor(Color.red);
 			}
 
@@ -74,11 +69,56 @@ public class MenuState extends AbstractGameState
 	}
 
 	@Override
-	public void init()
-	{
-		final Background background = new Background("menuBackground.jpg", 0.5);
+	public void init() {
+		final Background background = new Background(
+				"Tiles/Background/menuBackground.jpg", 0.5);
 		background.setVector(5, 0);
 		setBackground(background);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent key) {
+
+		if (key.getKeyCode() == KeyEvent.VK_UP) {
+			selectedMenuItem--;
+			System.out.println("Still here");
+			if (selectedMenuItem < 0) {
+				selectedMenuItem = menuItems.length - 1;
+			}
+			
+		} else if (key.getKeyCode() == KeyEvent.VK_DOWN) {
+			
+			selectedMenuItem++;
+			
+			if (selectedMenuItem >= menuItems.length) {
+				selectedMenuItem = 0;
+			}
+		}
+		else if (key.getKeyCode() == KeyEvent.VK_ENTER) {
+			switch (selectedMenuItem) {
+			case 0:
+				startLevel1();
+				break;
+			case 1:
+				System.exit(0);
+				break;
+			}
+		}
+	}
+
+	private void startLevel1() {
+		final GameStateManager manager = getManager();
+		manager.loadState(1);
+		manager.getGameController().getFrame().removeKeyListener(this);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent key) {
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent key) {
 
 	}
 }

@@ -37,27 +37,27 @@ public class GameController implements ClockListener
 		playerOne.setName("Player One");
 		players.add(playerOne);
 
-		keyBindings.setPlayerOne(playerOne);
-		//TODO: Implement player Two
-		keyBindings.setPlayerTwo(playerOne);
 
 		Clock gameClock = new Clock(20);
 		Clock frameClock = new Clock(60);
 		setClock(gameClock);
 
-		frame = new GameFrame(GAME_TITLE);
-		final GamePanel gamePanel = new GamePanel(GameStateManager.getInstance());
-		frame.setLayout(new BorderLayout());
-		frame.add(gamePanel, BorderLayout.CENTER);
-		frame.setClock(frameClock);
-		frame.pack();
+		setFrame(new GameFrame(GAME_TITLE));
+		final GamePanel gamePanel = new GamePanel(GameStateManager.getInstance(this));
+		getFrame().setLayout(new BorderLayout());
+		getFrame().add(gamePanel, BorderLayout.CENTER);
+		getFrame().setClock(frameClock);
+		getFrame().pack();
 		keyBindings = new KeyBindings(gamePanel);
+		keyBindings.setPlayerOne(playerOne);
+		//TODO: Implement player Two
+		keyBindings.setPlayerTwo(playerOne);
 
 		init();
 
 		gameClock.start();
 		frameClock.start();
-		frame.setVisible(true);
+		getFrame().setVisible(true);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class GameController implements ClockListener
 
 	public void init()
 	{
-		gameStateManager = GameStateManager.getInstance();
+		gameStateManager = GameStateManager.getInstance(this);
 		gameStateManager.init();
 	}
 
@@ -96,5 +96,13 @@ public class GameController implements ClockListener
 	public void setKeyBindings(KeyBindings keyBindings)
 	{
 		this.keyBindings = keyBindings;
+	}
+
+	public GameFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(GameFrame frame) {
+		this.frame = frame;
 	}
 }
