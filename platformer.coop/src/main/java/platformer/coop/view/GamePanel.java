@@ -12,18 +12,16 @@ import javax.swing.JPanel;
 import platformer.coop.controller.GameController;
 import platformer.coop.controller.GameStateManager;
 
-public class GamePanel extends JPanel
-{
+public class GamePanel extends JPanel {
 	private Image backBuffer;
 	private Graphics bBG;
 
-	private int width = 640;
-	private int height = 320;
+	private int width = GameController.WIDTH;
+	private int height = GameController.HEIGHT;
 
 	private GameStateManager gameStateManager;
 
-	public GamePanel(GameStateManager gameStateManager)
-	{
+	public GamePanel(GameStateManager gameStateManager) {
 		super();
 		setPreferredSize(new Dimension(width, height));
 		this.setGameStateManager(gameStateManager);
@@ -33,11 +31,9 @@ public class GamePanel extends JPanel
 	}
 
 	@Override
-	protected void paintComponent(Graphics g)
-	{
+	protected void paintComponent(Graphics g) {
 
-		if (backBuffer == null)
-		{
+		if (backBuffer == null) {
 			backBuffer = createImage(getWidth(), getHeight());
 			backBuffer.setAccelerationPriority(1f);
 			bBG = backBuffer.getGraphics();
@@ -49,30 +45,29 @@ public class GamePanel extends JPanel
 		g.drawImage(backBuffer, 0, 0, this);
 	}
 
-	private void paintGameState(Graphics g)
-	{
+	private void paintGameState(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		//clear screen
+		// clear screen
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 
-		BufferedImage image = new BufferedImage(GameController.WIDTH, GameController.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(GameController.WIDTH,
+				GameController.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		image.setAccelerationPriority(0.9f);
 
 		Graphics2D paintedArea = (Graphics2D) image.getGraphics();
 		gameStateManager.draw(paintedArea);
 		paintedArea.dispose();
-		g2d.drawImage(image, 0, 0, this);
+		g2d.drawImage(image, 0, 0, GameController.WIDTH, GameController.HEIGHT,
+				this);
 
 	}
 
-	public GameStateManager getGameStateManager()
-	{
+	public GameStateManager getGameStateManager() {
 		return gameStateManager;
 	}
 
-	public void setGameStateManager(GameStateManager gameStateManager)
-	{
+	public void setGameStateManager(GameStateManager gameStateManager) {
 		this.gameStateManager = gameStateManager;
 	}
 }

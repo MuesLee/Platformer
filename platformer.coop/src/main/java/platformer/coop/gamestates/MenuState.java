@@ -8,8 +8,6 @@ import java.awt.event.KeyListener;
 
 import platformer.coop.controller.GameController;
 import platformer.coop.controller.GameStateManager;
-import platformer.coop.controls.KeyBindings;
-import platformer.coop.entities.Player;
 import platformer.coop.tilemap.Background;
 
 public class MenuState extends AbstractGameState implements KeyListener {
@@ -51,7 +49,7 @@ public class MenuState extends AbstractGameState implements KeyListener {
 	private void drawTitle(Graphics2D g) {
 		g.setFont(titleFont);
 		g.setColor(titleColor);
-		g.drawString(GameController.GAME_TITLE, 10, 50);
+		g.drawString(GameController.GAME_TITLE, 155, 115);
 	}
 
 	private void drawMenu(Graphics2D g) {
@@ -64,14 +62,14 @@ public class MenuState extends AbstractGameState implements KeyListener {
 				g.setColor(Color.red);
 			}
 
-			g.drawString(menuItems[i], 100, 100 + i * 20);
+			g.drawString(menuItems[i], 300, 140 + i * 20);
 		}
 	}
 
 	@Override
 	public void init() {
 		final Background background = new Background(
-				"Tiles/Background/menuBackground.jpg", 0.5);
+				"Tiles/Background/menuBackground.jpg", 1);
 		background.setVector(5, 0);
 		setBackground(background);
 	}
@@ -85,16 +83,15 @@ public class MenuState extends AbstractGameState implements KeyListener {
 			if (selectedMenuItem < 0) {
 				selectedMenuItem = menuItems.length - 1;
 			}
-			
+
 		} else if (key.getKeyCode() == KeyEvent.VK_DOWN) {
-			
+
 			selectedMenuItem++;
-			
+
 			if (selectedMenuItem >= menuItems.length) {
 				selectedMenuItem = 0;
 			}
-		}
-		else if (key.getKeyCode() == KeyEvent.VK_ENTER) {
+		} else if (key.getKeyCode() == KeyEvent.VK_ENTER) {
 			switch (selectedMenuItem) {
 			case 0:
 				startLevel1();
