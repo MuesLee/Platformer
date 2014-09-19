@@ -10,8 +10,7 @@ import platformer.coop.util.ClockListener;
 import platformer.coop.view.GameFrame;
 import platformer.coop.view.GamePanel;
 
-public class GameController implements ClockListener
-{
+public class GameController implements ClockListener {
 
 	public static final String GAME_TITLE = "EPIC NAME";
 
@@ -28,8 +27,7 @@ public class GameController implements ClockListener
 
 	private ArrayList<Player> players;
 
-	public GameController()
-	{
+	public GameController() {
 
 		players = new ArrayList<Player>();
 
@@ -37,20 +35,20 @@ public class GameController implements ClockListener
 		playerOne.setName("Player One");
 		players.add(playerOne);
 
-
 		Clock gameClock = new Clock(20);
 		Clock frameClock = new Clock(60);
 		setClock(gameClock);
 
 		setFrame(new GameFrame(GAME_TITLE));
-		final GamePanel gamePanel = new GamePanel(GameStateManager.getInstance(this));
+		final GamePanel gamePanel = new GamePanel(
+				GameStateManager.getInstance(this));
 		getFrame().setLayout(new BorderLayout());
 		getFrame().add(gamePanel, BorderLayout.CENTER);
 		getFrame().setClock(frameClock);
 		getFrame().pack();
 		keyBindings = new KeyBindings(gamePanel);
 		keyBindings.setPlayerOne(playerOne);
-		//TODO: Implement player Two
+		// TODO: Implement player Two
 		keyBindings.setPlayerTwo(playerOne);
 
 		init();
@@ -61,20 +59,16 @@ public class GameController implements ClockListener
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		gameStateManager.update();
 	}
 
-	public Clock getClock()
-	{
+	public Clock getClock() {
 		return clock;
 	}
 
-	public void setClock(Clock clk)
-	{
-		if (this.clock != null)
-		{
+	public void setClock(Clock clk) {
+		if (this.clock != null) {
 			this.clock.removeClockListener(this);
 		}
 
@@ -82,19 +76,16 @@ public class GameController implements ClockListener
 		this.clock.addClockListener(this);
 	}
 
-	public void init()
-	{
+	public void init() {
 		gameStateManager = GameStateManager.getInstance(this);
 		gameStateManager.init();
 	}
 
-	public KeyBindings getKeyBindings()
-	{
+	public KeyBindings getKeyBindings() {
 		return keyBindings;
 	}
 
-	public void setKeyBindings(KeyBindings keyBindings)
-	{
+	public void setKeyBindings(KeyBindings keyBindings) {
 		this.keyBindings = keyBindings;
 	}
 

@@ -8,8 +8,7 @@ import javax.imageio.ImageIO;
 
 import platformer.coop.controller.GameController;
 
-public class Background
-{
+public class Background {
 	private Image image;
 
 	private int x = 0;
@@ -20,59 +19,48 @@ public class Background
 
 	private double moveScale = 1;
 
-	public Background(String path, double moveScale)
-	{
-		try
-		{
+	public Background(String path, double moveScale) {
+		try {
 			image = ImageIO.read(ClassLoader.getSystemResourceAsStream(path));
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		this.moveScale = moveScale;
 	}
 
-	public void setPosition(int x, int y)
-	{
+	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public void setVector(int dx, int dy)
-	{
+	public void setVector(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
 	}
 
-	public void update()
-	{
+	public void update() {
 
 		x = (int) (x + dx * moveScale);
 		y = (int) (y + dy * moveScale);
 
-		if (x == GameController.WIDTH)
-		{
+		if (x == GameController.WIDTH) {
 			x = 0;
-		}
-		else if (y == GameController.HEIGHT)
-		{
+		} else if (y == GameController.HEIGHT) {
 			y = 0;
 		}
 	}
 
-	public void draw(Graphics2D g2d)
-	{
-		g2d.drawImage(image, x, y, null);
+	public void draw(Graphics2D g2d) {
+		g2d.drawImage(image, x, y, GameController.WIDTH, GameController.HEIGHT,
+				null);
 
-		if (x < 0)
-		{
-			g2d.drawImage(image, GameController.WIDTH + x, y, null);
-		}
-		else if (x > 0)
-		{
-			g2d.drawImage(image, x - GameController.WIDTH, y, null);
+		if (x < 0) {
+			g2d.drawImage(image, GameController.WIDTH + x, y,
+					GameController.WIDTH, GameController.HEIGHT, null);
+		} else if (x > 0) {
+			g2d.drawImage(image, x - GameController.WIDTH, y,
+					GameController.WIDTH, GameController.HEIGHT, null);
 		}
 	}
 }
