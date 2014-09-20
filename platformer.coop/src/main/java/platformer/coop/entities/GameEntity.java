@@ -153,6 +153,11 @@ public abstract class GameEntity {
 		this.y = y;
 	}
 
+	public void setMapPosition(int x, int y) {
+		xMap = tileMap.getX();
+		yMap = tileMap.getY();
+	}
+
 	public void setVector(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
