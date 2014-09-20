@@ -31,7 +31,9 @@ public class GameController implements ClockListener {
 
 		players = new ArrayList<Player>();
 
-		Player playerOne = new Player();
+		//TODO: PlayerTileMap
+		Player playerOne = new Player(null);
+		
 		playerOne.setName("Player One");
 		players.add(playerOne);
 
