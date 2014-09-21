@@ -2,6 +2,7 @@ package platformer.coop.entities;
 
 import java.awt.Rectangle;
 
+import platformer.coop.controller.GameController;
 import platformer.coop.tilemap.Tile;
 import platformer.coop.tilemap.TileMap;
 
@@ -126,6 +127,12 @@ public abstract class GameEntity {
 			}
 
 		}
+	}
+
+	public boolean isNotOnScreen() {
+		return x + xMap + width < 0 || x + xMap - width > GameController.WIDTH
+				|| y + yMap + height < 0
+				|| y + yMap - height > GameController.HEIGHT;
 	}
 
 	public void calculateCorners(double x, double y) {
