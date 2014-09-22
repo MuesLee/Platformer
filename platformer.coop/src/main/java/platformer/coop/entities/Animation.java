@@ -8,6 +8,7 @@ public class Animation {
 	private int currentFrame;
 	private long startTime;
 	private long delay;
+	private int timesPlayed;
 
 	private boolean playedOnce = false;
 
@@ -22,11 +23,19 @@ public class Animation {
 		return frames;
 	}
 
+	public boolean hasPlayed(int i) {
+		return timesPlayed == i;
+	}
+
 	public void setFrames(BufferedImage[] frames) {
 		this.frames = frames;
 		this.currentFrame = 0;
 		startTime = System.nanoTime();
-		playedOnce = false;
+		setPlayedOnce(false);
+	}
+
+	public BufferedImage getImage() {
+		return frames[currentFrame];
 	}
 
 	public int getCurrentFrame() {
@@ -51,5 +60,13 @@ public class Animation {
 
 	public void setDelay(long delay) {
 		this.delay = delay;
+	}
+
+	public boolean isPlayedOnce() {
+		return playedOnce;
+	}
+
+	public void setPlayedOnce(boolean playedOnce) {
+		this.playedOnce = playedOnce;
 	}
 }

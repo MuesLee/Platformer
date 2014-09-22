@@ -24,7 +24,8 @@ public class TileMap {
 
 	private int[][] map;
 
-	private int tileSize;
+	private int tileWidth;
+	private int tileHeight;
 	private int numRows;
 	private int numCols;
 	private int width;
@@ -42,10 +43,16 @@ public class TileMap {
 
 	public TileMap(int tileSize) {
 
-		this.tileSize = tileSize;
+		this.setTileWidth(tileSize);
+		this.setTileHeight(tileSize);
 		numRowsToDraw = GameController.HEIGHT / tileSize + 2;
 		numColsToDraw = GameController.WIDTH / tileSize + 2;
 
+	}
+
+	public TileMap(int tileWidth, int tileHeight) {
+		this.tileHeight = tileHeight;
+		this.tileWidth = tileWidth;
 	}
 
 	public void loadTiles(String path) {
@@ -55,17 +62,18 @@ public class TileMap {
 			e.printStackTrace();
 		}
 
-		numTilesAcross = tileSet.getWidth() / tileSize;
+		numTilesAcross = tileSet.getWidth() / getTileWidth();
 		tiles = new Tile[2][numTilesAcross];
 
 		BufferedImage subimage;
 
 		for (int i = 0; i < numTilesAcross; i++) {
-			subimage = tileSet.getSubimage(i * tileSize, 0, tileSize, tileSize);
+			subimage = tileSet.getSubimage(i * getTileWidth(), 0,
+					getTileWidth(), getTileHeight());
 
 			tiles[0][i] = new Tile(subimage, Tile.NORMAL);
-			subimage = tileSet.getSubimage(i * tileSize, tileSize, tileSize,
-					tileSize);
+			subimage = tileSet.getSubimage(i * getTileWidth(), getTileHeight(),
+					getTileWidth(), getTileHeight());
 			tiles[1][i] = new Tile(subimage, Tile.BLOCKED);
 		}
 
@@ -81,8 +89,8 @@ public class TileMap {
 			numRows = Integer.parseInt(br.readLine());
 			numCols = Integer.parseInt(br.readLine());
 			map = new int[numRows][numCols];
-			width = numCols * tileSize;
-			height = numRows * tileSize;
+			width = numCols * getTileWidth();
+			height = numRows * getTileHeight();
 
 			for (int row = 0; row < numRows; row++) {
 				String line = br.readLine();
@@ -104,8 +112,8 @@ public class TileMap {
 
 		fixBounds();
 
-		rowOffset = -this.y / tileSize;
-		colOffset = -this.x / tileSize;
+		rowOffset = -this.y / getTileHeight();
+		colOffset = -this.x / getTileWidth();
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -128,7 +136,7 @@ public class TileMap {
 
 				tileNumber = map[row][col];
 				g2d.drawImage(getImageForTileNumber(tileNumber - 1), x + col
-						* tileSize, y + row * tileSize, null);
+						* getTileWidth(), y + row * getTileHeight(), null);
 			}
 		}
 	}
@@ -232,14 +240,6 @@ public class TileMap {
 		this.map = map;
 	}
 
-	public int getTileSize() {
-		return tileSize;
-	}
-
-	public void setTileSize(int tileSize) {
-		this.tileSize = tileSize;
-	}
-
 	public int getNumRows() {
 		return numRows;
 	}
@@ -326,6 +326,22 @@ public class TileMap {
 
 	public void setNumColsToDraw(int numColsToDraw) {
 		this.numColsToDraw = numColsToDraw;
+	}
+
+	public int getTileWidth() {
+		return tileWidth;
+	}
+
+	public void setTileWidth(int tileWidth) {
+		this.tileWidth = tileWidth;
+	}
+
+	public int getTileHeight() {
+		return tileHeight;
+	}
+
+	public void setTileHeight(int tileHeight) {
+		this.tileHeight = tileHeight;
 	}
 
 }
