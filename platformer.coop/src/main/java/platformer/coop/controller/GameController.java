@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import platformer.coop.controls.KeyBindings;
 import platformer.coop.entities.Player;
+import platformer.coop.tilemap.TileMap;
 import platformer.coop.util.Clock;
 import platformer.coop.util.ClockListener;
 import platformer.coop.view.GameFrame;
@@ -31,9 +32,11 @@ public class GameController implements ClockListener {
 
 		players = new ArrayList<Player>();
 
-		//TODO: PlayerTileMap
-		Player playerOne = new Player(null);
-		
+		// TODO: PlayerTileMap
+		TileMap tileMapPlayerOne = new TileMap(50, 122);
+		tileMapPlayerOne.loadTiles("Tiles/Player/nerdyguy.png");
+		Player playerOne = new Player(tileMapPlayerOne);
+
 		playerOne.setName("Player One");
 		players.add(playerOne);
 

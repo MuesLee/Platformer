@@ -9,7 +9,6 @@ import platformer.coop.tilemap.TileMap;
 public abstract class GameEntity {
 
 	protected TileMap tileMap;
-	protected int tileSize;
 	protected int xMap;
 	protected int yMap;
 
@@ -56,11 +55,14 @@ public abstract class GameEntity {
 	protected double jumpMax;
 
 	protected String name;
+	private int tileWidth;
+	private int tileHeight;
 
 	public GameEntity(TileMap tileMap) {
 		super();
 		this.tileMap = tileMap;
-		this.tileSize = tileMap.getTileSize();
+		this.tileWidth = tileMap.getTileWidth();
+		this.tileHeight = tileMap.getTileHeight();
 	}
 
 	public boolean intersects(GameEntity entity) {
@@ -75,9 +77,39 @@ public abstract class GameEntity {
 				collisionBoxWidth, collisionBoxHeight);
 	}
 
+	public void draw(java.awt.Graphics2D g) {
+		setMapPosition();
+		if (isFacingRight()) {
+			g.drawImage(animation.getImage(), x + xMap - width / 2, y + yMap
+					- height / 2, null);
+		} else {
+			g.drawImage(animation.getImage(), x + xMap - width / 2 + width, y
+					+ yMap - height / 2, -width, height, null);
+		}
+	}
+
+	public boolean intersects(Rectangle r) {
+		return getRectangle().intersects(r);
+	}
+
+	public boolean contains(GameEntity o) {
+		Rectangle r1 = getRectangle();
+		Rectangle r2 = o.getRectangle();
+		return r1.contains(r2);
+	}
+
+	public boolean contains(Rectangle r) {
+		return getRectangle().contains(r);
+	}
+
+	public Rectangle getRectangle() {
+		return new Rectangle(x - collisionBoxWidth / 2, y - collisionBoxHeight
+				/ 2, collisionBoxWidth, collisionBoxHeight);
+	}
+
 	public void checkTileMapCollision() {
-		currentRow = y / tileSize;
-		currentColumn = x / tileSize;
+		currentRow = y / tileHeight;
+		currentColumn = x / tileWidth;
 
 		xDestination = x + dx;
 		yDestination = y + dy;
@@ -90,7 +122,7 @@ public abstract class GameEntity {
 		if (dy < 0) {
 			if (topLeft || topRight) {
 				dy = 0;
-				yTemp = currentRow * tileSize + collisionBoxHeight / 2;
+				yTemp = currentRow * tileHeight + collisionBoxHeight / 2;
 			} else {
 				yTemp += dy;
 			}
@@ -98,7 +130,7 @@ public abstract class GameEntity {
 			if (bottomLeft || bottomRight) {
 				dy = 0;
 				isFalling = false;
-				yTemp = (currentRow + 1) * tileSize - collisionBoxHeight / 2;
+				yTemp = (currentRow + 1) * tileHeight - collisionBoxHeight / 2;
 			} else {
 				yTemp += dy;
 			}
@@ -109,14 +141,14 @@ public abstract class GameEntity {
 		if (dx < 0) {
 			if (topLeft || bottomLeft) {
 				dx = 0;
-				xTemp = currentColumn * tileSize + collisionBoxWidth / 2;
+				xTemp = currentColumn * tileWidth + collisionBoxWidth / 2;
 			} else {
 				xTemp += dx;
 			}
 		} else if (dx > 0) {
 			if (topRight || bottomRight) {
 				dx = 0;
-				xTemp = (currentColumn + 1) * tileSize - collisionBoxWidth / 2;
+				xTemp = (currentColumn + 1) * tileWidth - collisionBoxWidth / 2;
 			}
 		}
 
@@ -136,10 +168,10 @@ public abstract class GameEntity {
 	}
 
 	public void calculateCorners(double x, double y) {
-		int leftTile = (int) (x - collisionBoxWidth / 2) / tileSize;
-		int rightTile = (int) (x + collisionBoxWidth / 2 - 1) / tileSize;
-		int topTile = (int) (y - collisionBoxHeight / 2) / tileSize;
-		int bottomTile = (int) (y + collisionBoxHeight / 2 - 1) / tileSize;
+		int leftTile = (int) (x - collisionBoxWidth / 2) / tileWidth;
+		int rightTile = (int) (x + collisionBoxWidth / 2 - 1) / tileWidth;
+		int topTile = (int) (y - collisionBoxHeight / 2) / tileHeight;
+		int bottomTile = (int) (y + collisionBoxHeight / 2 - 1) / tileHeight;
 		if (topTile < 0 || bottomTile >= tileMap.getNumRows() || leftTile < 0
 				|| rightTile >= tileMap.getNumCols()) {
 			topLeft = topRight = bottomLeft = bottomRight = false;
@@ -160,7 +192,7 @@ public abstract class GameEntity {
 		this.y = y;
 	}
 
-	public void setMapPosition(int x, int y) {
+	public void setMapPosition() {
 		xMap = tileMap.getX();
 		yMap = tileMap.getY();
 	}
@@ -232,14 +264,6 @@ public abstract class GameEntity {
 
 	public void setTileMap(TileMap tileMap) {
 		this.tileMap = tileMap;
-	}
-
-	public int getTileSize() {
-		return tileSize;
-	}
-
-	public void setTileSize(int tileSize) {
-		this.tileSize = tileSize;
 	}
 
 	public int getxMap() {
