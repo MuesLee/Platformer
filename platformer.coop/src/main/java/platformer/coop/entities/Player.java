@@ -1,12 +1,21 @@
 package platformer.coop.entities;
 
-import platformer.coop.tilemap.TileMap;
+public class Player extends GameEntity {
 
-public class Player extends GameEntity
-{
+	public Player() {
+		super();
+		setMoveSpeed(5);
+	}
 
-	public Player(TileMap tileMap) {
-		super(tileMap);
-		// TODO Auto-generated constructor stub
+	public void update() {
+		if (isJumping()) {
+			x = (int) Math.min(x + jumpStart, jumpMax);
+		}
+		if (isMovingRight) {
+			x += moveSpeed;
+		}
+		if (isMovingLeft) {
+			x -= moveSpeed;
+		}
 	}
 }

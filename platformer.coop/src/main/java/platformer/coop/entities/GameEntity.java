@@ -58,11 +58,8 @@ public abstract class GameEntity {
 	private int tileWidth;
 	private int tileHeight;
 
-	public GameEntity(TileMap tileMap) {
+	public GameEntity() {
 		super();
-		this.tileMap = tileMap;
-		this.tileWidth = tileMap.getTileWidth();
-		this.tileHeight = tileMap.getTileHeight();
 	}
 
 	public boolean intersects(GameEntity entity) {
@@ -264,6 +261,9 @@ public abstract class GameEntity {
 
 	public void setTileMap(TileMap tileMap) {
 		this.tileMap = tileMap;
+		this.tileWidth = tileMap.getTileWidth();
+		this.tileHeight = tileMap.getTileHeight();
+
 	}
 
 	public int getxMap() {

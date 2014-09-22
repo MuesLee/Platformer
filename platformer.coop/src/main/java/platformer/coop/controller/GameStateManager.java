@@ -6,6 +6,7 @@ import platformer.coop.gamestates.AbstractGameState;
 import platformer.coop.gamestates.GameStates;
 import platformer.coop.gamestates.MenuState;
 import platformer.coop.util.GameStateFactory;
+import platformer.coop.view.Camera;
 
 public class GameStateManager {
 
@@ -16,6 +17,8 @@ public class GameStateManager {
 	private static GameStateManager instance;
 
 	private GameController gameController;
+
+	private Camera camera;
 
 	private GameStateManager(GameController gameController) {
 		this.gameController = gameController;
@@ -33,15 +36,22 @@ public class GameStateManager {
 	}
 
 	public void init() {
-		getCurrentState().init();
+		AbstractGameState currentGameState = getCurrentState();
+		currentGameState.setPlayers(gameController.getPlayers());
+		currentGameState.init();
 	}
 
 	public void draw(Graphics2D g) {
+		g.translate(-camera.getX(), -camera.getY());
+
 		getCurrentState().draw(g);
+
+		g.translate(camera.getX(), camera.getY());
 	}
 
 	public void update() {
 		getCurrentState().update();
+		camera.update();
 	}
 
 	private AbstractGameState getCurrentState() {
@@ -52,8 +62,8 @@ public class GameStateManager {
 		GameStates stateByNumber = GameStates.getStateByNumber(number);
 		final AbstractGameState nextState = GameStateFactory.createGameState(
 				stateByNumber, getGameController());
-		nextState.init();
 		currentState = nextState;
+		init();
 	}
 
 	public GameController getGameController() {
@@ -62,6 +72,10 @@ public class GameStateManager {
 
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
 	}
 
 }
