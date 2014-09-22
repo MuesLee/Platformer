@@ -3,6 +3,7 @@ package platformer.coop.gamestates;
 import java.awt.Graphics2D;
 
 import platformer.coop.controller.GameStateManager;
+import platformer.coop.entities.Player;
 import platformer.coop.tilemap.Background;
 import platformer.coop.tilemap.TileMap;
 
@@ -24,6 +25,9 @@ public class Level1State extends AbstractGameState {
 	@Override
 	public void update() {
 		super.getBackground().update();
+		for (Player player : players) {
+			player.update();
+		}
 	}
 
 	@Override
@@ -37,6 +41,10 @@ public class Level1State extends AbstractGameState {
 		tileMap.loadTiles("Tiles/grass_flowers_30.png");
 		tileMap.loadMap("Maps/level1.map");
 		tileMap.setPosition(0, 0);
+
+		for (Player player : players) {
+			player.setTileMap(tileMap);
+		}
 
 	}
 

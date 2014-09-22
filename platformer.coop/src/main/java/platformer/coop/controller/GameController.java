@@ -7,6 +7,7 @@ import platformer.coop.controls.KeyBindings;
 import platformer.coop.entities.Player;
 import platformer.coop.util.Clock;
 import platformer.coop.util.ClockListener;
+import platformer.coop.view.Camera;
 import platformer.coop.view.GameFrame;
 import platformer.coop.view.GamePanel;
 
@@ -29,12 +30,7 @@ public class GameController implements ClockListener {
 
 	public GameController() {
 
-		players = new ArrayList<Player>();
-
-		Player playerOne = new Player(tileMapPlayerOne);
-
-		playerOne.setName("Player One");
-		players.add(playerOne);
+		setPlayers(new ArrayList<Player>());
 
 		Clock gameClock = new Clock(20);
 		Clock frameClock = new Clock(60);
@@ -47,12 +43,18 @@ public class GameController implements ClockListener {
 		getFrame().add(gamePanel, BorderLayout.CENTER);
 		getFrame().setClock(frameClock);
 		getFrame().pack();
+
+		Player playerOne = new Player();
+		playerOne.setName("Player One");
+		Player playerTwo = new Player();
+		playerTwo.setName("Player Two");
+		getPlayers().add(playerOne);
 		keyBindings = new KeyBindings(gamePanel);
 		keyBindings.setPlayerOne(playerOne);
-		// TODO: Implement player Two
-		keyBindings.setPlayerTwo(playerOne);
-
+		keyBindings.setPlayerTwo(playerTwo);
+		Camera camera = new Camera(players, 1.0);
 		init();
+		gameStateManager.setCamera(camera);
 
 		gameClock.start();
 		frameClock.start();
@@ -96,5 +98,13 @@ public class GameController implements ClockListener {
 
 	public void setFrame(GameFrame frame) {
 		this.frame = frame;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 }
