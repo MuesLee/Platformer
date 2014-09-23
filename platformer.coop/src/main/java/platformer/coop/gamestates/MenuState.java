@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import platformer.coop.controller.GameController;
 import platformer.coop.controller.GameStateManager;
 import platformer.coop.tilemap.Background;
+import platformer.coop.view.Camera;
 
 public class MenuState extends AbstractGameState implements KeyListener {
 
@@ -39,8 +40,6 @@ public class MenuState extends AbstractGameState implements KeyListener {
 
 	@Override
 	public void draw(Graphics2D g) {
-		super.getBackground().draw(g);
-
 		drawTitle(g);
 		drawMenu(g);
 
@@ -72,6 +71,8 @@ public class MenuState extends AbstractGameState implements KeyListener {
 				"Tiles/Background/menuBackground.jpg", 1);
 		background.setVector(5, 0);
 		setBackground(background);
+
+		setCamera(new Camera(players, null, 0));
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Player;
 import platformer.coop.tilemap.Background;
 import platformer.coop.tilemap.TileMap;
+import platformer.coop.view.Camera;
 
 public class Level1State extends AbstractGameState {
 
@@ -17,7 +18,7 @@ public class Level1State extends AbstractGameState {
 
 	@Override
 	public void draw(Graphics2D g2d) {
-		super.getBackground().draw(g2d);
+		// super.getBackground().draw(g2d);
 
 		tileMap.draw(g2d);
 	}
@@ -25,6 +26,7 @@ public class Level1State extends AbstractGameState {
 	@Override
 	public void update() {
 		super.getBackground().update();
+		getCamera().update();
 		for (Player player : players) {
 			player.update();
 		}
@@ -46,6 +48,7 @@ public class Level1State extends AbstractGameState {
 			player.setTileMap(tileMap);
 		}
 
+		setCamera(new Camera(players, tileMap, 1.0));
 	}
 
 }

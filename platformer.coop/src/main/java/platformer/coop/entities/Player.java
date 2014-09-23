@@ -8,10 +8,14 @@ public class Player extends GameEntity {
 	}
 
 	public void update() {
+
+		System.out.println("player X" + x);
+
 		if (isJumping()) {
 			x = (int) Math.min(x + jumpStart, jumpMax);
 		}
 		if (isMovingRight) {
+			System.out.println("isMoving Right");
 			x += moveSpeed;
 		}
 		if (isMovingLeft) {

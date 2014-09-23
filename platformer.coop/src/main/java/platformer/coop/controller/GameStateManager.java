@@ -18,8 +18,6 @@ public class GameStateManager {
 
 	private GameController gameController;
 
-	private Camera camera;
-
 	private GameStateManager(GameController gameController) {
 		this.gameController = gameController;
 		final MenuState menuState = new MenuState(this);
@@ -42,16 +40,21 @@ public class GameStateManager {
 	}
 
 	public void draw(Graphics2D g) {
+
+		AbstractGameState tempCurrentState = getCurrentState();
+
+		tempCurrentState.drawBackground(g);
+		Camera camera = tempCurrentState.getCamera();
+
 		g.translate(-camera.getX(), -camera.getY());
 
-		getCurrentState().draw(g);
+		tempCurrentState.draw(g);
 
-		g.translate(camera.getX(), camera.getY());
+		g.translate(0, 0);
 	}
 
 	public void update() {
 		getCurrentState().update();
-		camera.update();
 	}
 
 	private AbstractGameState getCurrentState() {
@@ -73,9 +76,4 @@ public class GameStateManager {
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
-
-	public void setCamera(Camera camera) {
-		this.camera = camera;
-	}
-
 }

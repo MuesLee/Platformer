@@ -7,7 +7,6 @@ import platformer.coop.controls.KeyBindings;
 import platformer.coop.entities.Player;
 import platformer.coop.util.Clock;
 import platformer.coop.util.ClockListener;
-import platformer.coop.view.Camera;
 import platformer.coop.view.GameFrame;
 import platformer.coop.view.GamePanel;
 
@@ -52,9 +51,7 @@ public class GameController implements ClockListener {
 		keyBindings = new KeyBindings(gamePanel);
 		keyBindings.setPlayerOne(playerOne);
 		keyBindings.setPlayerTwo(playerTwo);
-		Camera camera = new Camera(players, 1.0);
 		init();
-		gameStateManager.setCamera(camera);
 
 		gameClock.start();
 		frameClock.start();

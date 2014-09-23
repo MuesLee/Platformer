@@ -5,17 +5,38 @@ import java.awt.image.BufferedImage;
 public class Animation {
 
 	private BufferedImage[] frames;
-	private int currentFrame;
-	private long startTime;
-	private long delay;
-	private int timesPlayed;
+	private int indexOfcurrentFrame;
+	private long framesBetweenNextAnimation;
 
-	private boolean playedOnce = false;
+	private int timesPlayed;
+	private int framesSinceLastAnimation;
+	private int maxIndexOfFrames;
 
 	public Animation() {
+		timesPlayed = 0;
+		framesBetweenNextAnimation = 3;
+	}
+
+	private void nextFrame() {
+		if (indexOfcurrentFrame == maxIndexOfFrames) {
+			indexOfcurrentFrame = 0;
+		} else {
+			indexOfcurrentFrame = Math.max(indexOfcurrentFrame + 1,
+					maxIndexOfFrames);
+		}
 	}
 
 	public void update() {
+
+		if (framesBetweenNextAnimation == -1)
+			return;
+
+		framesSinceLastAnimation++;
+
+		if (framesSinceLastAnimation == framesBetweenNextAnimation) {
+			framesSinceLastAnimation = 0;
+			nextFrame();
+		}
 
 	}
 
@@ -29,44 +50,23 @@ public class Animation {
 
 	public void setFrames(BufferedImage[] frames) {
 		this.frames = frames;
-		this.currentFrame = 0;
-		startTime = System.nanoTime();
-		setPlayedOnce(false);
+		indexOfcurrentFrame = 0;
+		framesSinceLastAnimation = 0;
+		timesPlayed = 0;
+		framesBetweenNextAnimation = 2;
+		maxIndexOfFrames = frames.length - 1;
 	}
 
 	public BufferedImage getImage() {
-		return frames[currentFrame];
+		return frames[indexOfcurrentFrame];
 	}
 
 	public int getCurrentFrame() {
-		return currentFrame;
+		return indexOfcurrentFrame;
 	}
 
 	public void setCurrentFrame(int currentFrame) {
-		this.currentFrame = currentFrame;
+		this.indexOfcurrentFrame = currentFrame;
 	}
 
-	public long getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
-	public long getDelay() {
-		return delay;
-	}
-
-	public void setDelay(long delay) {
-		this.delay = delay;
-	}
-
-	public boolean isPlayedOnce() {
-		return playedOnce;
-	}
-
-	public void setPlayedOnce(boolean playedOnce) {
-		this.playedOnce = playedOnce;
-	}
 }
