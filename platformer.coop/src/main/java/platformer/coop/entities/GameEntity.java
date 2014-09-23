@@ -50,8 +50,10 @@ public abstract class GameEntity {
 	protected double moveSpeed;
 	protected double moveSpeedMax;
 	protected double moveSpeedSlowDownRate;
+	protected double moveSpeedIncreaseRate;
 	protected double fallSpeed;
-	protected double jumpStart;
+	protected double jumpSpeed;
+	private double jumpSpeedIncrease;
 	protected double jumpMax;
 
 	protected String name;
@@ -490,20 +492,36 @@ public abstract class GameEntity {
 		this.fallSpeed = fallSpeed;
 	}
 
-	public double getJumpStart() {
-		return jumpStart;
-	}
-
-	public void setJumpStart(double jumpStart) {
-		this.jumpStart = jumpStart;
-	}
-
 	public double getJumpMax() {
 		return jumpMax;
 	}
 
 	public void setJumpMax(double jumpMax) {
 		this.jumpMax = jumpMax;
+	}
+
+	public double getJumpSpeed() {
+		return jumpSpeed;
+	}
+
+	public void setJumpSpeed(double jumpSpeed) {
+		this.jumpSpeed = jumpSpeed;
+	}
+
+	public double getMoveSpeedIncreaseRate() {
+		return moveSpeedIncreaseRate;
+	}
+
+	public void setMoveSpeedIncreaseRate(double moveSpeedIncreaseRate) {
+		this.moveSpeedIncreaseRate = moveSpeedIncreaseRate;
+	}
+
+	public double getJumpSpeedIncrease() {
+		return jumpSpeedIncrease;
+	}
+
+	public void setJumpSpeedIncrease(double jumpSpeedIncrease) {
+		this.jumpSpeedIncrease = jumpSpeedIncrease;
 	}
 
 }

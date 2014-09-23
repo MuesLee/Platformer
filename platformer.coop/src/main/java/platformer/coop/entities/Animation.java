@@ -14,7 +14,7 @@ public class Animation {
 
 	public Animation() {
 		timesPlayed = 0;
-		framesBetweenNextAnimation = 3;
+		setFramesBetweenNextAnimation(3);
 	}
 
 	private void nextFrame() {
@@ -28,12 +28,12 @@ public class Animation {
 
 	public void update() {
 
-		if (framesBetweenNextAnimation == -1)
+		if (getFramesBetweenNextAnimation() == -1)
 			return;
 
 		framesSinceLastAnimation++;
 
-		if (framesSinceLastAnimation == framesBetweenNextAnimation) {
+		if (framesSinceLastAnimation == getFramesBetweenNextAnimation()) {
 			framesSinceLastAnimation = 0;
 			nextFrame();
 		}
@@ -53,7 +53,7 @@ public class Animation {
 		indexOfcurrentFrame = 0;
 		framesSinceLastAnimation = 0;
 		timesPlayed = 0;
-		framesBetweenNextAnimation = 2;
+		setFramesBetweenNextAnimation(2);
 		maxIndexOfFrames = frames.length - 1;
 	}
 
@@ -67,6 +67,14 @@ public class Animation {
 
 	public void setCurrentFrame(int currentFrame) {
 		this.indexOfcurrentFrame = currentFrame;
+	}
+
+	public long getFramesBetweenNextAnimation() {
+		return framesBetweenNextAnimation;
+	}
+
+	public void setFramesBetweenNextAnimation(long framesBetweenNextAnimation) {
+		this.framesBetweenNextAnimation = framesBetweenNextAnimation;
 	}
 
 }
