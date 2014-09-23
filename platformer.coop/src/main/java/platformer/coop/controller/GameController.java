@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import platformer.coop.controls.KeyBindings;
+import platformer.coop.entities.MoveActions;
 import platformer.coop.entities.Player;
 import platformer.coop.util.Clock;
 import platformer.coop.util.ClockListener;
@@ -31,7 +32,7 @@ public class GameController implements ClockListener {
 
 		setPlayers(new ArrayList<Player>());
 
-		Clock gameClock = new Clock(20);
+		Clock gameClock = new Clock(40);
 		Clock frameClock = new Clock(60);
 		setClock(gameClock);
 
@@ -43,14 +44,12 @@ public class GameController implements ClockListener {
 		getFrame().setClock(frameClock);
 		getFrame().pack();
 
-		Player playerOne = new Player();
+		Player playerOne = new Player(this, 1);
 		playerOne.setName("Player One");
-		Player playerTwo = new Player();
+		Player playerTwo = new Player(this, 2);
 		playerTwo.setName("Player Two");
 		getPlayers().add(playerOne);
 		keyBindings = new KeyBindings(gamePanel);
-		keyBindings.setPlayerOne(playerOne);
-		keyBindings.setPlayerTwo(playerTwo);
 		init();
 
 		gameClock.start();
@@ -103,5 +102,18 @@ public class GameController implements ClockListener {
 
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
+	}
+
+	public MoveActions getInputForPlayer(int playerID) {
+
+		switch (playerID) {
+		case 1:
+			return keyBindings.getPlayerOneInput();
+		case 2:
+			return keyBindings.getPlayerTwoInput();
+		default:
+			return keyBindings.getPlayerOneInput();
+		}
+
 	}
 }

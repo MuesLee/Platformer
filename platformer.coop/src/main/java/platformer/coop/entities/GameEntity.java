@@ -1,21 +1,16 @@
 package platformer.coop.entities;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import platformer.coop.controller.GameController;
-import platformer.coop.tilemap.Tile;
 import platformer.coop.tilemap.TileMap;
 
 public abstract class GameEntity {
 
 	protected TileMap tileMap;
-	protected int xMap;
-	protected int yMap;
 
 	protected int x;
 	protected int y;
-	protected int dx;
-	protected int dy;
 
 	protected int width;
 	protected int height;
@@ -25,10 +20,6 @@ public abstract class GameEntity {
 
 	protected int currentRow;
 	protected int currentColumn;
-	protected int xDestination;
-	protected int yDestination;
-	protected int xTemp;
-	protected int yTemp;
 
 	protected boolean bottomLeft;
 	protected boolean bottomRight;
@@ -40,12 +31,7 @@ public abstract class GameEntity {
 	protected int previousAction;
 	protected boolean isFacingRight;
 
-	protected boolean isMovingLeft = false;
-	protected boolean isMovingRight = false;
-	protected boolean isJumping = false;
-	protected boolean isCrouching = false;
-	protected boolean isShooting = false;
-	protected boolean isFalling = false;
+	protected MoveActions moveActions;
 
 	protected double moveSpeed;
 	protected double moveSpeedMax;
@@ -62,6 +48,52 @@ public abstract class GameEntity {
 
 	public GameEntity() {
 		super();
+		animation = new Animation();
+		this.moveActions = new MoveActions();
+	}
+
+	public void update() {
+
+		processInputs();
+
+		move();
+
+		animation.update();
+
+		System.out.println(name + ": X " + x);
+		System.out.println(name + ": Y " + y);
+
+	}
+
+	protected void processInputs() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void move() {
+
+		if (moveActions.isMovingRight()) {
+			moveSpeed = Math.min(moveSpeedMax, moveSpeed
+					+ moveSpeedIncreaseRate);
+		} else if (moveActions.isMovingLeft()) {
+			moveSpeed = Math.min(moveSpeedMax, moveSpeed
+					+ moveSpeedIncreaseRate);
+			moveSpeed *= (-1);
+		} else {
+			if (moveSpeed < 0) {
+				moveSpeed = Math.min(moveSpeedSlowDownRate + moveSpeed, 0);
+			} else if (moveSpeed > 0) {
+				moveSpeed = Math.max(moveSpeedSlowDownRate - moveSpeed, 0);
+			}
+		}
+
+		x += moveSpeed;
+	}
+
+	public void draw(Graphics2D g2d) {
+
+		g2d.drawImage(animation.getImage(), null, x, y);
+
 	}
 
 	public boolean intersects(GameEntity entity) {
@@ -74,17 +106,6 @@ public abstract class GameEntity {
 	public Rectangle getCollisionBox() {
 		return new Rectangle(x - collisionBoxWidth, y - collisionBoxHeight,
 				collisionBoxWidth, collisionBoxHeight);
-	}
-
-	public void draw(java.awt.Graphics2D g) {
-		setMapPosition();
-		if (isFacingRight()) {
-			g.drawImage(animation.getImage(), x + xMap - width / 2, y + yMap
-					- height / 2, null);
-		} else {
-			g.drawImage(animation.getImage(), x + xMap - width / 2 + width, y
-					+ yMap - height / 2, -width, height, null);
-		}
 	}
 
 	public boolean intersects(Rectangle r) {
@@ -110,135 +131,11 @@ public abstract class GameEntity {
 		currentRow = y / tileHeight;
 		currentColumn = x / tileWidth;
 
-		xDestination = x + dx;
-		yDestination = y + dy;
-
-		xTemp = x;
-		yTemp = y;
-
-		calculateCorners(x, yDestination);
-
-		if (dy < 0) {
-			if (topLeft || topRight) {
-				dy = 0;
-				yTemp = currentRow * tileHeight + collisionBoxHeight / 2;
-			} else {
-				yTemp += dy;
-			}
-		} else if (dy > 0) {
-			if (bottomLeft || bottomRight) {
-				dy = 0;
-				isFalling = false;
-				yTemp = (currentRow + 1) * tileHeight - collisionBoxHeight / 2;
-			} else {
-				yTemp += dy;
-			}
-		}
-
-		calculateCorners(xDestination, y);
-
-		if (dx < 0) {
-			if (topLeft || bottomLeft) {
-				dx = 0;
-				xTemp = currentColumn * tileWidth + collisionBoxWidth / 2;
-			} else {
-				xTemp += dx;
-			}
-		} else if (dx > 0) {
-			if (topRight || bottomRight) {
-				dx = 0;
-				xTemp = (currentColumn + 1) * tileWidth - collisionBoxWidth / 2;
-			}
-		}
-
-		if (!isFalling()) {
-			calculateCorners(x, yDestination + 1);
-			if (!(bottomLeft || bottomRight)) {
-				isFalling = true;
-			}
-
-		}
-	}
-
-	public boolean isNotOnScreen() {
-		return x + xMap + width < 0 || x + xMap - width > GameController.WIDTH
-				|| y + yMap + height < 0
-				|| y + yMap - height > GameController.HEIGHT;
-	}
-
-	public void calculateCorners(double x, double y) {
-		int leftTile = (int) (x - collisionBoxWidth / 2) / tileWidth;
-		int rightTile = (int) (x + collisionBoxWidth / 2 - 1) / tileWidth;
-		int topTile = (int) (y - collisionBoxHeight / 2) / tileHeight;
-		int bottomTile = (int) (y + collisionBoxHeight / 2 - 1) / tileHeight;
-		if (topTile < 0 || bottomTile >= tileMap.getNumRows() || leftTile < 0
-				|| rightTile >= tileMap.getNumCols()) {
-			topLeft = topRight = bottomLeft = bottomRight = false;
-			return;
-		}
-		int tl = tileMap.getType(topTile, leftTile);
-		int tr = tileMap.getType(topTile, rightTile);
-		int bl = tileMap.getType(bottomTile, leftTile);
-		int br = tileMap.getType(bottomTile, rightTile);
-		topLeft = tl == Tile.BLOCKED;
-		topRight = tr == Tile.BLOCKED;
-		bottomLeft = bl == Tile.BLOCKED;
-		bottomRight = br == Tile.BLOCKED;
 	}
 
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
-	}
-
-	public void setMapPosition() {
-		xMap = tileMap.getX();
-		yMap = tileMap.getY();
-	}
-
-	public void setVector(int dx, int dy) {
-		this.dx = dx;
-		this.dy = dy;
-	}
-
-	public boolean isMovingLeft() {
-		return isMovingLeft;
-	}
-
-	public void setMovingLeft(boolean isMovingLeft) {
-		this.isMovingLeft = isMovingLeft;
-	}
-
-	public boolean isMovingRight() {
-		return isMovingRight;
-	}
-
-	public void setMovingRight(boolean isMovingRight) {
-		this.isMovingRight = isMovingRight;
-	}
-
-	public boolean isJumping() {
-		return isJumping;
-	}
-
-	public void setJumping(boolean isJumping) {
-		this.isJumping = isJumping;
-	}
-
-	public boolean isCrouching() {
-		return isCrouching;
-	}
-
-	public void setCrouching(boolean isCrouching) {
-		this.isCrouching = isCrouching;
-	}
-
-	public boolean isShooting() {
-		return isShooting;
-	}
-
-	public void setShooting(boolean isShooting) {
-		this.isShooting = isShooting;
 	}
 
 	public String getName() {
@@ -247,14 +144,6 @@ public abstract class GameEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean isFalling() {
-		return isFalling;
-	}
-
-	public void setFalling(boolean isFalling) {
-		this.isFalling = isFalling;
 	}
 
 	public TileMap getTileMap() {
@@ -266,22 +155,6 @@ public abstract class GameEntity {
 		this.tileWidth = tileMap.getTileWidth();
 		this.tileHeight = tileMap.getTileHeight();
 
-	}
-
-	public int getxMap() {
-		return xMap;
-	}
-
-	public void setxMap(int xMap) {
-		this.xMap = xMap;
-	}
-
-	public int getyMap() {
-		return yMap;
-	}
-
-	public void setyMap(int yMap) {
-		this.yMap = yMap;
 	}
 
 	public int getX() {
@@ -298,22 +171,6 @@ public abstract class GameEntity {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public int getDx() {
-		return dx;
-	}
-
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
-
-	public int getDy() {
-		return dy;
-	}
-
-	public void setDy(int dy) {
-		this.dy = dy;
 	}
 
 	public int getWidth() {
@@ -362,70 +219,6 @@ public abstract class GameEntity {
 
 	public void setCurrentColumn(int currentColumn) {
 		this.currentColumn = currentColumn;
-	}
-
-	public int getxDestination() {
-		return xDestination;
-	}
-
-	public void setxDestination(int xDestination) {
-		this.xDestination = xDestination;
-	}
-
-	public int getyDestination() {
-		return yDestination;
-	}
-
-	public void setyDestination(int yDestination) {
-		this.yDestination = yDestination;
-	}
-
-	public int getxTemp() {
-		return xTemp;
-	}
-
-	public void setxTemp(int xTemp) {
-		this.xTemp = xTemp;
-	}
-
-	public int getyTemp() {
-		return yTemp;
-	}
-
-	public void setyTemp(int yTemp) {
-		this.yTemp = yTemp;
-	}
-
-	public boolean isBottomLeft() {
-		return bottomLeft;
-	}
-
-	public void setBottomLeft(boolean bottomLeft) {
-		this.bottomLeft = bottomLeft;
-	}
-
-	public boolean isBottomRight() {
-		return bottomRight;
-	}
-
-	public void setBottomRight(boolean bottomRight) {
-		this.bottomRight = bottomRight;
-	}
-
-	public boolean isTopLeft() {
-		return topLeft;
-	}
-
-	public void setTopLeft(boolean topLeft) {
-		this.topLeft = topLeft;
-	}
-
-	public boolean isTopRight() {
-		return topRight;
-	}
-
-	public void setTopRight(boolean topRight) {
-		this.topRight = topRight;
 	}
 
 	public Animation getAnimation() {

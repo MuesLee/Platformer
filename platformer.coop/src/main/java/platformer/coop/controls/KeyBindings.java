@@ -7,12 +7,12 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
-import platformer.coop.entities.Player;
+import platformer.coop.entities.MoveActions;
 
 public class KeyBindings {
 
-	private Player playerOne = null;
-	private Player playerTwo = null;
+	private MoveActions playerOneInput = new MoveActions();
+	private MoveActions playerTwoInput = new MoveActions();
 
 	public KeyBindings(JComponent gp) {
 		// PLAYER TWO
@@ -22,7 +22,7 @@ public class KeyBindings {
 		gp.getActionMap().put("W pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setJumping(true);
+				getPlayerTwoInput().setJumping(true);
 			}
 		});
 
@@ -31,7 +31,7 @@ public class KeyBindings {
 		gp.getActionMap().put("W released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setJumping(false);
+				getPlayerTwoInput().setJumping(false);
 			}
 		});
 
@@ -40,7 +40,7 @@ public class KeyBindings {
 		gp.getActionMap().put("S pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setCrouching(true);
+				getPlayerTwoInput().setCrouching(true);
 			}
 		});
 		gp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -48,7 +48,7 @@ public class KeyBindings {
 		gp.getActionMap().put("S released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setCrouching(false);
+				getPlayerTwoInput().setCrouching(false);
 			}
 		});
 
@@ -57,7 +57,7 @@ public class KeyBindings {
 		gp.getActionMap().put("A pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setMovingLeft(true);
+				getPlayerTwoInput().setMovingLeft(true);
 			}
 		});
 		gp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -65,7 +65,7 @@ public class KeyBindings {
 		gp.getActionMap().put("A released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setMovingLeft(false);
+				getPlayerTwoInput().setMovingLeft(false);
 			}
 		});
 
@@ -74,7 +74,7 @@ public class KeyBindings {
 		gp.getActionMap().put("D pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setMovingRight(true);
+				getPlayerTwoInput().setMovingRight(true);
 			}
 		});
 		gp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -82,7 +82,7 @@ public class KeyBindings {
 		gp.getActionMap().put("D released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerTwo.setMovingRight(false);
+				getPlayerTwoInput().setMovingRight(false);
 			}
 		});
 
@@ -94,7 +94,7 @@ public class KeyBindings {
 		gp.getActionMap().put("down pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setCrouching(true);
+				getPlayerOneInput().setCrouching(true);
 			}
 		});
 
@@ -104,7 +104,7 @@ public class KeyBindings {
 		gp.getActionMap().put("down released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setCrouching(false);
+				getPlayerOneInput().setCrouching(false);
 			}
 		});
 
@@ -113,7 +113,7 @@ public class KeyBindings {
 		gp.getActionMap().put("up pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setJumping(true);
+				getPlayerOneInput().setJumping(true);
 			}
 		});
 
@@ -122,7 +122,7 @@ public class KeyBindings {
 		gp.getActionMap().put("up released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setJumping(false);
+				getPlayerOneInput().setJumping(false);
 			}
 		});
 
@@ -132,7 +132,7 @@ public class KeyBindings {
 		gp.getActionMap().put("left pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setMovingLeft(true);
+				getPlayerOneInput().setMovingLeft(true);
 			}
 		});
 		gp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -141,7 +141,7 @@ public class KeyBindings {
 		gp.getActionMap().put("left released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setMovingLeft(false);
+				getPlayerOneInput().setMovingLeft(false);
 			}
 		});
 
@@ -151,7 +151,7 @@ public class KeyBindings {
 		gp.getActionMap().put("right pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setMovingRight(true);
+				getPlayerOneInput().setMovingRight(true);
 			}
 		});
 		gp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -160,24 +160,24 @@ public class KeyBindings {
 		gp.getActionMap().put("right released", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				playerOne.setMovingRight(false);
+				getPlayerOneInput().setMovingRight(false);
 			}
 		});
 	}
 
-	public Player getPlayerOne() {
-		return playerOne;
+	public MoveActions getPlayerOneInput() {
+		return playerOneInput;
 	}
 
-	public void setPlayerOne(Player playerOne) {
-		this.playerOne = playerOne;
+	public void setPlayerOneInput(MoveActions playerOneInput) {
+		this.playerOneInput = playerOneInput;
 	}
 
-	public Player getPlayerTwo() {
-		return playerTwo;
+	public MoveActions getPlayerTwoInput() {
+		return playerTwoInput;
 	}
 
-	public void setPlayerTwo(Player playerTwo) {
-		this.playerTwo = playerTwo;
+	public void setPlayerTwoInput(MoveActions playerTwoInput) {
+		this.playerTwoInput = playerTwoInput;
 	}
 }
