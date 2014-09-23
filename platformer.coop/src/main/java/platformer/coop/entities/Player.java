@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import platformer.coop.controller.GameController;
+
 public class Player extends GameEntity {
 
 	private List<BufferedImage[]> sprites;
@@ -18,11 +20,17 @@ public class Player extends GameEntity {
 	private static final int ANIMATION_MOVE_RIGHT = 0;
 	private static final int ANIMATION_MOVE_LEFT = 1;
 
-	public Player() {
+	private GameController gameController;
+	private int playerID;
+
+	public Player(GameController gameController, int playerID) {
 		super();
+		this.setPlayerID(playerID);
 		setMoveSpeedIncreaseRate(5);
 		setMoveSpeedMax(15);
 		setJumpSpeedIncrease(2);
+		setMoveSpeedSlowDownRate(7.5);
+		this.setGameController(gameController);
 
 		BufferedImage spritesheet;
 		try {
@@ -43,27 +51,13 @@ public class Player extends GameEntity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		animation = new Animation();
 		setAnimation(ANIMATION_MOVE_RIGHT);
 
 	}
 
-	public void update() {
-
-		System.out.println(name + ": X " + x);
-		System.out.println(name + ": Y " + y);
-
-		if (isJumping()) {
-			x = (int) Math.min(y + getJumpSpeedIncrease(), jumpMax);
-		}
-		if (isMovingRight) {
-			moveSpeed = Math.max(moveSpeedMax, moveSpeed
-					+ moveSpeedIncreaseRate);
-			x += moveSpeed;
-		}
-		if (isMovingLeft) {
-			x -= moveSpeed;
-		}
+	@Override
+	protected void processInputs() {
+		moveActions = gameController.getInputForPlayer(playerID);
 	}
 
 	private void setAnimation(int i) {
@@ -72,5 +66,21 @@ public class Player extends GameEntity {
 		animation.setFramesBetweenNextAnimation(SPRITETIMINGS[currentAction]);
 		width = FRAMEWIDTHS[currentAction];
 		height = FRAMEHEIGHTS[currentAction];
+	}
+
+	public GameController getGameController() {
+		return gameController;
+	}
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
+
+	public int getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(int playerID) {
+		this.playerID = playerID;
 	}
 }

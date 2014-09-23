@@ -35,7 +35,6 @@ public class Camera {
 
 		int xMax = 0;
 		for (Player player : players) {
-			System.out.println("Camera X: " + x);
 			xMax = Math.max(player.getX(), xMax);
 		}
 
