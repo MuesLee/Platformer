@@ -4,6 +4,7 @@ import java.util.List;
 
 import platformer.coop.controller.GameController;
 import platformer.coop.entities.Player;
+import platformer.coop.tilemap.TileMap;
 
 public class Camera {
 
@@ -13,11 +14,13 @@ public class Camera {
 	private int viewWidth;
 	private int viewHeight;
 
+	private TileMap tileMap;
+
 	private List<Player> players;
 
 	private double moveFactor;
 
-	public Camera(List<Player> players, double moveFactor) {
+	public Camera(List<Player> players, TileMap tileMap, double moveFactor) {
 		super();
 		this.x = 0;
 		this.y = 0;
@@ -25,6 +28,7 @@ public class Camera {
 		this.moveFactor = moveFactor;
 		this.viewHeight = GameController.HEIGHT;
 		this.viewWidth = GameController.WIDTH;
+		this.tileMap = tileMap;
 	}
 
 	public void update() {
@@ -34,7 +38,9 @@ public class Camera {
 			System.out.println("Camera X: " + x);
 			xMax = Math.max(player.getX(), xMax);
 		}
-		x = Math.max(xMax - viewWidth, 0);
+
+		this.x = Math.max(0, xMax - viewWidth / 2);
+		this.tileMap.setPosition(x, y);
 	}
 
 	public int getX() {
@@ -83,6 +89,14 @@ public class Camera {
 
 	public void setViewHeight(int viewHeight) {
 		this.viewHeight = viewHeight;
+	}
+
+	public TileMap getTileMap() {
+		return tileMap;
+	}
+
+	public void setTileMap(TileMap tileMap) {
+		this.tileMap = tileMap;
 	}
 
 }
