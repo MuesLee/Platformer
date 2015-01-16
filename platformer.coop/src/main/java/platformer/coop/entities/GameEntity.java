@@ -31,7 +31,7 @@ public abstract class GameEntity {
 	protected int previousAction;
 	protected boolean isFacingRight;
 
-	protected MoveActions moveActions;
+	private MoveActions moveActions;
 
 	protected double moveSpeed;
 	protected double moveSpeedMax;
@@ -49,7 +49,7 @@ public abstract class GameEntity {
 	public GameEntity() {
 		super();
 		animation = new Animation();
-		this.moveActions = new MoveActions();
+		this.setMoveActions(new MoveActions());
 	}
 
 	public void update() {
@@ -72,13 +72,13 @@ public abstract class GameEntity {
 
 	private void move() {
 
-		if (moveActions.isMovingRight()) {
+		if (getMoveActions().isMovingRight()) {
 			moveSpeed = Math.min(moveSpeedMax, moveSpeed
 					+ moveSpeedIncreaseRate);
-		} else if (moveActions.isMovingLeft()) {
+		} else if (getMoveActions().isMovingLeft()) {
 			moveSpeed = Math.min(moveSpeedMax, moveSpeed
 					+ moveSpeedIncreaseRate);
-			moveSpeed *= (-1);
+			moveSpeed *= -1;
 		} else {
 			if (moveSpeed < 0) {
 				moveSpeed = Math.min(moveSpeedSlowDownRate + moveSpeed, 0);
@@ -87,7 +87,13 @@ public abstract class GameEntity {
 			}
 		}
 
-		x += moveSpeed;
+		for (int i = 0; i < moveSpeed; i++) {
+			
+			checkTileMapCollision();
+			
+			x += i;
+		}
+		
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -315,6 +321,14 @@ public abstract class GameEntity {
 
 	public void setJumpSpeedIncrease(double jumpSpeedIncrease) {
 		this.jumpSpeedIncrease = jumpSpeedIncrease;
+	}
+
+	public MoveActions getMoveActions() {
+		return moveActions;
+	}
+
+	public void setMoveActions(MoveActions moveActions) {
+		this.moveActions = moveActions;
 	}
 
 }

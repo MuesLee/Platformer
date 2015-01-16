@@ -3,7 +3,7 @@ package platformer.coop.controller;
 import java.awt.Graphics2D;
 
 import platformer.coop.gamestates.AbstractGameState;
-import platformer.coop.gamestates.GameStates;
+import platformer.coop.gamestates.GameState;
 import platformer.coop.gamestates.MenuState;
 import platformer.coop.util.GameStateFactory;
 import platformer.coop.view.Camera;
@@ -62,7 +62,7 @@ public class GameStateManager {
 	}
 
 	public void loadState(int number) {
-		GameStates stateByNumber = GameStates.getStateByNumber(number);
+		GameState stateByNumber = GameState.getStateByNumber(number);
 		final AbstractGameState nextState = GameStateFactory.createGameState(
 				stateByNumber, getGameController());
 		currentState = nextState;
