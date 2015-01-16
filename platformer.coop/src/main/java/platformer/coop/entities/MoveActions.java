@@ -7,7 +7,6 @@ public class MoveActions {
 	private boolean isJumping = false;
 	private boolean isCrouching = false;
 	private boolean isShooting = false;
-	private boolean isFalling = false;
 
 	public boolean isMovingLeft() {
 		return isMovingLeft;
@@ -48,13 +47,4 @@ public class MoveActions {
 	public void setShooting(boolean isShooting) {
 		this.isShooting = isShooting;
 	}
-
-	public boolean isFalling() {
-		return isFalling;
-	}
-
-	public void setFalling(boolean isFalling) {
-		this.isFalling = isFalling;
-	}
-
 }

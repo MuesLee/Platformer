@@ -1,12 +1,12 @@
 package platformer.coop.gamestates;
 
-public enum GameStates {
+public enum GameState {
 
 	MENU_STATE(0), LEVEL_1(1);
 
 	private int stateNumber;
 
-	private GameStates(int stateNumber)
+	private GameState(int stateNumber)
 	{
 		this.setStateNumber(stateNumber);
 	}
@@ -21,14 +21,14 @@ public enum GameStates {
 		this.stateNumber = stateNumber;
 	}
 
-	public static GameStates getStateByNumber(int number)
+	public static GameState getStateByNumber(int number)
 	{
-		GameStates result = null;
+		GameState result = null;
 
-		GameStates[] values = GameStates.values();
+		GameState[] values = GameState.values();
 		for (int i = 0; i < values.length; i++)
 		{
-			GameStates t = values[i];
+			GameState t = values[i];
 
 			if (number == t.getStateNumber())
 			{

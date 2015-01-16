@@ -57,7 +57,7 @@ public class Player extends GameEntity {
 
 	@Override
 	protected void processInputs() {
-		moveActions = gameController.getInputForPlayer(playerID);
+		
 	}
 
 	private void setAnimation(int i) {

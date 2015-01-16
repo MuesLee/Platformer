@@ -13,6 +13,7 @@ import platformer.coop.controller.GameController;
 import platformer.coop.controller.GameStateManager;
 
 public class GamePanel extends JPanel {
+	private static final long serialVersionUID = -2414643643356712734L;
 	private Image backBuffer;
 	private Graphics bBG;
 
@@ -27,6 +28,7 @@ public class GamePanel extends JPanel {
 		this.setGameStateManager(gameStateManager);
 		this.setBackground(Color.RED);
 		this.setVisible(true);
+		setIgnoreRepaint(true);
 
 	}
 
@@ -36,9 +38,8 @@ public class GamePanel extends JPanel {
 		if (backBuffer == null) {
 			backBuffer = createImage(getWidth(), getHeight());
 			backBuffer.setAccelerationPriority(1f);
-			bBG = backBuffer.getGraphics();
 		}
-		Graphics2D g2d = (Graphics2D) backBuffer.getGraphics();
+		bBG = backBuffer.getGraphics();
 
 		paintGameState(bBG);
 
