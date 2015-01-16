@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import platformer.coop.entities.StaticGameEntity;
+
 public class Quadtree {
 
 	private static final int TOP_LEFT_QUADRANT = 1;
@@ -16,19 +18,19 @@ public class Quadtree {
 	private int MAX_LEVELS = 5;
 
 	private int level;
-	private List<Rectangle> rectangles;
+	private List<StaticGameEntity> entities;
 	private Rectangle bounds;
 	private Quadtree[] nodes;
 
-	public Quadtree(int level, Rectangle bounds) {
-		this.level = level;
-		rectangles = new ArrayList<Rectangle>();
+	public Quadtree(int startLevel, Rectangle bounds) {
+		this.level = startLevel;
+		entities = new ArrayList<StaticGameEntity>();
 		this.bounds = bounds;
 		nodes = new Quadtree[4];
 	}
 
 	public void clear() {
-		rectangles.clear();
+		entities.clear();
 
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] != null) {
@@ -53,12 +55,12 @@ public class Quadtree {
 		nodes[BOTTM_RIGHT_QUADRANT] = new Quadtree(level + 1, new Rectangle(x
 				+ halvedWidth, y + halvedHeight, halvedWidth, halvedHeight));
 
-		Iterator<Rectangle> iterator = rectangles.iterator();
+		Iterator<StaticGameEntity> iterator = entities.iterator();
 		while (iterator.hasNext()) {
-			Rectangle currentRectangle = iterator.next();
-			int index = getIndex(currentRectangle);
+			StaticGameEntity entity = iterator.next();
+			int index = getIndex(entity);
 			if (index != -1) {
-				nodes[index].insert(currentRectangle);
+				nodes[index].insert(entity);
 				iterator.remove();
 			}
 		}
@@ -68,24 +70,25 @@ public class Quadtree {
 	 * Gibt den Index des Quadranten zurück, in den das Rechteck passen würde.
 	 * Returns -1 wenn es nirgends vollständig hereinpasst.
 	 * 
-	 * @param rectangle zu überprüfendes Rechteck
+	 * @param entity
+	 *            zu überprüfendes Rechteck
 	 * @return Index des Quadranten. -1 wenn es nicht vollständig in einen
 	 *         Quadranten passt.
 	 */
-	private int getIndex(Rectangle rectangle) {
+	private int getIndex(StaticGameEntity entity) {
 		int index = -1;
 		double midpointX = bounds.getX() + (bounds.getWidth() / 2);
 		double midpointY = bounds.getY() + (bounds.getHeight() / 2);
 
 		// Rechteck passt komplett in die obere Hälfte des Quadtrees
-		boolean topQuadrant = (rectangle.getY() < midpointY && rectangle.getY()
-				+ rectangle.getHeight() < midpointY);
+		boolean topQuadrant = (entity.getY() < midpointY && entity.getY()
+				+ entity.getHeight() < midpointY);
 		// Rechteck passt komplett in die untere Hälfte des Quadtrees
-		boolean bottomQuadrant = (rectangle.getY() > midpointY);
+		boolean bottomQuadrant = (entity.getY() > midpointY);
 
 		// Rechteck passt komplett in die linke Hälfte des Quadtrees
-		if (rectangle.getX() < midpointX
-				&& rectangle.getX() + rectangle.getWidth() < midpointX) {
+		if (entity.getX() < midpointX
+				&& entity.getX() + entity.getWidth() < midpointX) {
 			if (topQuadrant) {
 				index = TOP_LEFT_QUADRANT;
 			} else if (bottomQuadrant) {
@@ -93,7 +96,7 @@ public class Quadtree {
 			}
 		}
 		// Rechteck passt komplett in die rechte Hälfte des Quadtrees
-		else if (rectangle.getX() > midpointX) {
+		else if (entity.getX() > midpointX) {
 			if (topQuadrant) {
 				index = TOP_RIGHT_QUADRANT;
 			} else if (bottomQuadrant) {
@@ -110,20 +113,20 @@ public class Quadtree {
 	 * 
 	 * @param rectangle
 	 */
-	public void insert(Rectangle rectangle) {
+	public void insert(StaticGameEntity entity) {
+		if (nodes[0] != null) {
+			int index = getIndex(entity);
 
-		int index = getIndex(rectangle);
+			if (index != -1) {
+				nodes[index].insert(entity);
 
-		if (index == -1) {
-			rectangles.add(rectangle);
-		} else {
-			if (nodes[index] == null) {
-				split();
+				return;
 			}
-			nodes[index].insert(rectangle);
 		}
 
-		if (rectangles.size() > MAX_OBJECTS && level < MAX_LEVELS) {
+		entities.add(entity);
+
+		if (entities.size() > MAX_OBJECTS && level < MAX_LEVELS) {
 			if (nodes[0] == null) {
 				split();
 			}
@@ -136,36 +139,34 @@ public class Quadtree {
 	 * 
 	 * @param returnObjects
 	 *            Ergebnisliste für rekursiven Aufruf. Darf initial null sein.
-	 * @param rectangle
+	 * @param entity
 	 *            zu überprüfendes Rechteck
 	 * @return Liste mit Rechtecken, die mit dem übergebenen kollidieren könnten
 	 */
-	public List<Rectangle> retrieve(List<Rectangle> returnObjects,
-			Rectangle rectangle) {
+	public List<StaticGameEntity> retrieve(
+			List<StaticGameEntity> returnObjects, StaticGameEntity entity) {
 
 		if (returnObjects == null) {
 			returnObjects = new ArrayList<>(MAX_OBJECTS);
 		}
 
-		int index = getIndex(rectangle);
+		int index = getIndex(entity);
 
 		if (index == -1) {
-			
+
 			for (int i = 0; i < nodes.length; i++) {
-				if(nodes[i]!= null)
-				{
-					nodes[i].retrieve(returnObjects, rectangle);
+				if (nodes[i] != null) {
+					nodes[i].retrieve(returnObjects, entity);
 				}
 			}
 
 		} else {
-			if (nodes[index] != null)
-			{
-				nodes[index].retrieve(returnObjects, rectangle);
+			if (nodes[index] != null) {
+				nodes[index].retrieve(returnObjects, entity);
 			}
 		}
 
-		returnObjects.addAll(rectangles);
+		returnObjects.addAll(entities);
 
 		return returnObjects;
 	}

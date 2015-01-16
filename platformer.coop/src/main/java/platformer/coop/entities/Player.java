@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import platformer.coop.controller.GameController;
 
-public class Player extends GameEntity {
+public class Player extends DynamicGameEntity {
 
 	private List<BufferedImage[]> sprites;
 	private static final int[] NUMFRAMES = { 3, 3 };
@@ -57,7 +57,7 @@ public class Player extends GameEntity {
 
 	@Override
 	protected void processInputs() {
-		
+
 	}
 
 	private void setAnimation(int i) {
