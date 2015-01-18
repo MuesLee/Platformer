@@ -20,17 +20,16 @@ public class DynamicGameEntity extends StaticGameEntity {
 
 		this.setMoveActions(new MoveActions());
 
-		animation.update();
-
-		System.out.println(name + ": X " + x);
-		System.out.println(name + ": Y " + y);
-
 	}
 
 	@Override
 	public void update() {
 
 		move();
+		animation.update();
+		System.out.println(name + ": X " + x);
+		System.out.println(name + ": Y " + y);
+
 	}
 
 	private void move() {
@@ -49,6 +48,8 @@ public class DynamicGameEntity extends StaticGameEntity {
 				moveSpeed = Math.max(moveSpeedSlowDownRate - moveSpeed, 0);
 			}
 		}
+
+		x += moveSpeed;
 	}
 
 	public boolean isFacingRight() {

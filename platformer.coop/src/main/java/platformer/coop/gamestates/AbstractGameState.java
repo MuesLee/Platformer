@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Player;
+import platformer.coop.quadtree.Quadtree;
 import platformer.coop.tilemap.Background;
 import platformer.coop.view.Camera;
 
@@ -13,6 +14,8 @@ public abstract class AbstractGameState {
 	protected ArrayList<Player> players;
 	protected GameStateManager manager;
 	protected Background background;
+
+	protected Quadtree quadtree;
 
 	private Camera camera;
 

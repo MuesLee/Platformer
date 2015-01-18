@@ -50,6 +50,7 @@ public class GameController implements ClockListener {
 		playerTwo.setName("Player Two");
 		getPlayers().add(playerOne);
 		keyBindings = new KeyBindings(gamePanel);
+		System.out.println("KEYB: " + playerOne.getMoveActions());
 		keyBindings.setPlayerOneInput(playerOne.getMoveActions());
 		keyBindings.setPlayerTwoInput(playerTwo.getMoveActions());
 		init();

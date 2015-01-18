@@ -55,11 +55,6 @@ public class Player extends DynamicGameEntity {
 
 	}
 
-	@Override
-	protected void processInputs() {
-
-	}
-
 	private void setAnimation(int i) {
 		currentAction = i;
 		animation.setFrames(sprites.get(currentAction));

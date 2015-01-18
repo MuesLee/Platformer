@@ -14,8 +14,8 @@ public class Quadtree {
 	private static final int BOTTOM_LEFT_QUADRANT = 2;
 	private static final int BOTTM_RIGHT_QUADRANT = 3;
 
-	private int MAX_OBJECTS = 10;
-	private int MAX_LEVELS = 5;
+	private int MAX_OBJECTS = 5;
+	private int MAX_LEVELS = 3;
 
 	private int level;
 	private List<StaticGameEntity> entities;
@@ -114,17 +114,18 @@ public class Quadtree {
 	 * @param rectangle
 	 */
 	public void insert(StaticGameEntity entity) {
-		if (nodes[0] != null) {
-			int index = getIndex(entity);
 
-			if (index != -1) {
-				nodes[index].insert(entity);
+		int index = getIndex(entity);
 
-				return;
+		if (index != -1) {
+			if (nodes[index] == null) {
+				split();
 			}
-		}
+			nodes[index].insert(entity);
 
-		entities.add(entity);
+		} else {
+			entities.add(entity);
+		}
 
 		if (entities.size() > MAX_OBJECTS && level < MAX_LEVELS) {
 			if (nodes[0] == null) {
@@ -156,6 +157,7 @@ public class Quadtree {
 
 			for (int i = 0; i < nodes.length; i++) {
 				if (nodes[i] != null) {
+					returnObjects.addAll(entities);
 					nodes[i].retrieve(returnObjects, entity);
 				}
 			}
@@ -165,9 +167,6 @@ public class Quadtree {
 				nodes[index].retrieve(returnObjects, entity);
 			}
 		}
-
-		returnObjects.addAll(entities);
-
 		return returnObjects;
 	}
 
