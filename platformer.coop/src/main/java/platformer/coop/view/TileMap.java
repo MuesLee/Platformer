@@ -1,6 +1,7 @@
-package platformer.coop.tilemap;
+package platformer.coop.view;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import platformer.coop.controller.GameController;
+import platformer.coop.entities.Tile;
 
 public class TileMap {
 
@@ -68,13 +70,18 @@ public class TileMap {
 		BufferedImage subimage;
 
 		for (int i = 0; i < numTilesAcross; i++) {
+
 			subimage = tileSet.getSubimage(i * getTileWidth(), 0,
 					getTileWidth(), getTileHeight());
+			Tile normalTile = new Tile(subimage, Tile.NORMAL);
+			normalTile.setCollisionBox(new Rectangle());
+			tiles[0][i] = normalTile;
 
-			tiles[0][i] = new Tile(subimage, Tile.NORMAL);
 			subimage = tileSet.getSubimage(i * getTileWidth(), getTileHeight(),
 					getTileWidth(), getTileHeight());
-			tiles[1][i] = new Tile(subimage, Tile.BLOCKED);
+			Tile blockedTile = new Tile(subimage, Tile.BLOCKED);
+			blockedTile.setCollisionBox(new Rectangle());
+			tiles[1][i] = blockedTile;
 		}
 
 	}

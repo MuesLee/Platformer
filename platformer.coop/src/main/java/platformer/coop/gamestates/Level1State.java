@@ -2,9 +2,9 @@ package platformer.coop.gamestates;
 
 import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Player;
-import platformer.coop.tilemap.Background;
-import platformer.coop.tilemap.TileMap;
+import platformer.coop.view.Background;
 import platformer.coop.view.Camera;
+import platformer.coop.view.TileMap;
 
 public class Level1State extends AbstractGameLevelState {
 

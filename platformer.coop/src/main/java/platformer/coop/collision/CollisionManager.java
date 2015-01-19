@@ -84,10 +84,10 @@ public class CollisionManager {
 	 * @param entity
 	 * @return Zuordnung berührter Objekte und der Seite, mit der dieses Objekt berührt wurde.
 	 */
-	public HashMap<StaticGameEntity, Collision> retrieveCollisions(
+	public HashMap<StaticGameEntity, CollisionSide> retrieveCollisions(
 			StaticGameEntity entity) {
 
-		HashMap<StaticGameEntity, Collision> collidedEntities = new HashMap<>();
+		HashMap<StaticGameEntity, CollisionSide> collidedEntities = new HashMap<>();
 
 		List<StaticGameEntity> possibleCollisions = dynamicQuadtree.retrieve(null,
 				entity);
@@ -107,15 +107,15 @@ public class CollisionManager {
 			// Rectangle otherRightLine = entity.getRightLine();
 			//
 			if (other.intersects(entityTopLine)) {
-				collidedEntities.put(other, Collision.TOP);
+				collidedEntities.put(other, CollisionSide.TOP);
 			} else if (other.intersects(entityBotLine)) {
-				collidedEntities.put(other, Collision.BOT);
+				collidedEntities.put(other, CollisionSide.BOT);
 				
 			} else if (other.intersects(entityRightLine)) {
-				collidedEntities.put(other, Collision.RIGHT);
+				collidedEntities.put(other, CollisionSide.RIGHT);
 				
 			} else if (other.intersects(entityLeftLine)) {
-				collidedEntities.put(other, Collision.LEFT);
+				collidedEntities.put(other, CollisionSide.LEFT);
 			}
 		}
 

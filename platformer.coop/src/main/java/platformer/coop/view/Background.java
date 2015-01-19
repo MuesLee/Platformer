@@ -1,4 +1,4 @@
-package platformer.coop.tilemap;
+package platformer.coop.view;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

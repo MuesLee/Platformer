@@ -1,15 +1,12 @@
-package platformer.coop.tilemap;
+package platformer.coop.entities;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import platformer.coop.entities.StaticGameEntity;
-
 public class Tile extends StaticGameEntity {
 
+	private Rectangle collisionBox;
 
-	private Rectangle collisionBox ;
-	
 	public Tile(BufferedImage image, int type) {
 		super();
 		this.setImage(image);
@@ -21,10 +18,11 @@ public class Tile extends StaticGameEntity {
 	}
 
 	public void setImage(BufferedImage image) {
-	
+
 		this.image = image;
 	}
 
+	@Override
 	public Rectangle getCollisionBox() {
 		return collisionBox;
 	}

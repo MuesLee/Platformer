@@ -5,7 +5,6 @@ import java.util.List;
 
 import platformer.coop.controller.GameController;
 import platformer.coop.entities.Player;
-import platformer.coop.tilemap.TileMap;
 
 public class Camera {
 

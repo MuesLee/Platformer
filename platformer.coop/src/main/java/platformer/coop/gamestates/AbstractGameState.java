@@ -7,7 +7,7 @@ import platformer.coop.collision.CollisionManager;
 import platformer.coop.collision.Quadtree;
 import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Player;
-import platformer.coop.tilemap.Background;
+import platformer.coop.view.Background;
 import platformer.coop.view.Camera;
 
 public abstract class AbstractGameState {

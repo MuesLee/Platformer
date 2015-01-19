@@ -1,6 +1,6 @@
 package platformer.coop.collision;
 
-public enum Collision {
+public enum CollisionSide {
 
 	TOP,BOT,LEFT,RIGHT;
 	
