@@ -1,4 +1,4 @@
-package platformer.coop.quadtree;
+package platformer.coop.collision;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Quadtree {
 
 	public Quadtree(int startLevel, Rectangle bounds) {
 		this.level = startLevel;
-		entities = new ArrayList<StaticGameEntity>();
+		entities = new ArrayList<StaticGameEntity>(MAX_OBJECTS);
 		this.bounds = bounds;
 		nodes = new Quadtree[4];
 		

@@ -40,6 +40,7 @@ public class MenuState extends AbstractGameState implements KeyListener {
 
 	@Override
 	public void draw(Graphics2D g) {
+		drawBackground(g);
 		drawTitle(g);
 		drawMenu(g);
 
@@ -71,8 +72,6 @@ public class MenuState extends AbstractGameState implements KeyListener {
 				"Tiles/Background/menuBackground.jpg", 1);
 		background.setVector(5, 0);
 		setBackground(background);
-
-		setCamera(new Camera(players, null, 0));
 	}
 
 	@Override
@@ -80,7 +79,6 @@ public class MenuState extends AbstractGameState implements KeyListener {
 
 		if (key.getKeyCode() == KeyEvent.VK_UP) {
 			selectedMenuItem--;
-			System.out.println("Still here");
 			if (selectedMenuItem < 0) {
 				selectedMenuItem = menuItems.length - 1;
 			}

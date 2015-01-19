@@ -1,4 +1,4 @@
-package platformer.coop.quadtree;
+package platformer.coop.collision;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import platformer.coop.collision.Quadtree;
 import platformer.coop.entities.StaticGameEntity;
 
 public class QuadtreeTest {

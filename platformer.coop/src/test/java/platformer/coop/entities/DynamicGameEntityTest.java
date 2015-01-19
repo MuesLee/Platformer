@@ -9,6 +9,10 @@ public class DynamicGameEntityTest {
 
 	private DynamicGameEntity classUnderTest;
 	private MoveActions moveActions;
+	
+	protected Animation animation;
+	protected int currentAction;
+	protected int previousAction;
 
 	@Before
 	public void init() throws Exception {
@@ -16,6 +20,7 @@ public class DynamicGameEntityTest {
 		
 		classUnderTest.setMoveSpeedMax(15);
 		classUnderTest.setMoveSpeedIncreaseRate(5);
+		classUnderTest.setMoveSpeedSlowDownRate(5);
 		classUnderTest.setAnimation(new Animation());
 		moveActions = new MoveActions();
 		classUnderTest.setMoveActions(moveActions);
@@ -66,6 +71,41 @@ public class DynamicGameEntityTest {
 		moveActions.setMovingLeft(true);
 		
 		classUnderTest.update();
+		classUnderTest.update();
+		
+		int expected = -15;
+		int actual = classUnderTest.getX();
+		
+		assertEquals(expected, actual);
+	}
+	@Test
+	public void testEntityMoves2StepRightThen1StepNoMove() throws Exception {
+		
+		moveActions.setMovingRight(true);
+
+		classUnderTest.update();
+		classUnderTest.update();
+		
+		moveActions.setMovingRight(false);
+		
+		classUnderTest.update();
+
+		int expected = 15;
+		int actual = classUnderTest.getX();
+
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testEntityMoves2StepLeftThen1StepNoMove() throws Exception {
+		
+		moveActions.setMovingLeft(true);
+		
+		classUnderTest.update();
+		classUnderTest.update();
+		
+		moveActions.setMovingLeft(false);
+		
 		classUnderTest.update();
 		
 		int expected = -15;

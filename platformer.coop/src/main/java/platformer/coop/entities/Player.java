@@ -56,11 +56,11 @@ public class Player extends DynamicGameEntity {
 	}
 
 	private void setAnimation(int i) {
-		currentAction = i;
-		animation.setFrames(sprites.get(currentAction));
-		animation.setFramesBetweenNextAnimation(SPRITETIMINGS[currentAction]);
-		width = FRAMEWIDTHS[currentAction];
-		height = FRAMEHEIGHTS[currentAction];
+		setCurrentAction(i);
+		animation.setFrames(sprites.get(getCurrentAction()));
+		animation.setFramesBetweenNextAnimation(SPRITETIMINGS[getCurrentAction()]);
+		width = FRAMEWIDTHS[getCurrentAction()];
+		height = FRAMEHEIGHTS[getCurrentAction()];
 	}
 
 	public GameController getGameController() {

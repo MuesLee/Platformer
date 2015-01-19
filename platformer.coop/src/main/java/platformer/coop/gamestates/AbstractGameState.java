@@ -3,21 +3,19 @@ package platformer.coop.gamestates;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import platformer.coop.collision.CollisionManager;
+import platformer.coop.collision.Quadtree;
 import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Player;
-import platformer.coop.quadtree.Quadtree;
 import platformer.coop.tilemap.Background;
 import platformer.coop.view.Camera;
 
 public abstract class AbstractGameState {
 
-	protected ArrayList<Player> players;
 	protected GameStateManager manager;
 	protected Background background;
-
-	protected Quadtree quadtree;
-
-	protected Camera camera;
+	
+	protected ArrayList<Player> players;
 
 	public AbstractGameState(GameStateManager manager) {
 		this.setManager(manager);
@@ -45,13 +43,6 @@ public abstract class AbstractGameState {
 		this.background = background;
 	}
 
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
-
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
-	}
 
 	public void drawBackground(Graphics2D g2d) {
 		if(background!= null)
@@ -60,12 +51,12 @@ public abstract class AbstractGameState {
 		}
 	}
 
-	public Camera getCamera() {
-		return camera;
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 
-	public void setCamera(Camera camera) {
-		this.camera = camera;
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 
 }

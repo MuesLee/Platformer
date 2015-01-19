@@ -45,11 +45,6 @@ public class GameStateManager {
 
 		AbstractGameState tempCurrentState = getCurrentState();
 
-		tempCurrentState.drawBackground(g);
-		Camera camera = tempCurrentState.getCamera();
-
-		g.translate(-camera.getX(), -camera.getY());
-
 		tempCurrentState.draw(g);
 
 		g.translate(0, 0);

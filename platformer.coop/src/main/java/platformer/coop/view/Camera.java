@@ -1,5 +1,6 @@
 package platformer.coop.view;
 
+import java.awt.Rectangle;
 import java.util.List;
 
 import platformer.coop.controller.GameController;
@@ -40,6 +41,12 @@ public class Camera {
 
 		this.x = Math.max(0, xMax - viewWidth / 2);
 		this.tileMap.setPosition(x, y);
+	}
+	
+	public Rectangle getViewRectangle()
+	{
+		return new Rectangle(getX(), getY(),
+				getViewWidth(), getViewHeight());
 	}
 
 	public int getX() {

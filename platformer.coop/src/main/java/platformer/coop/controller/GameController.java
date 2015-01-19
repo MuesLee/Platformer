@@ -22,6 +22,8 @@ public class GameController implements Runnable {
 
 	private static final boolean RENDER_TIME = true;
 
+	private static GameController gameController;
+
 	private GameStateManager gameStateManager;
 
 	private GameFrame frame;
@@ -35,7 +37,7 @@ public class GameController implements Runnable {
 
 	private GamePanel panel;
 
-	public GameController() {
+	private GameController() {
 
 		setPlayers(new ArrayList<Player>());
 
@@ -130,6 +132,15 @@ public class GameController implements Runnable {
 
 	}
 
+	public static GameController getInstance()
+	{
+		if(gameController == null)
+		{
+			gameController = new GameController();
+		}
+		return gameController;
+	}
+	
 	private void render() {
 		panel.repaint();
 	}

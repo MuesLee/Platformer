@@ -2,6 +2,7 @@ package platformer.coop.entities;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 
 public abstract class StaticGameEntity {
@@ -19,20 +20,20 @@ public abstract class StaticGameEntity {
 
 	protected String name;
 
-	protected Animation animation;
-	protected int currentAction;
-	protected int previousAction;
+	public static final int NORMAL = 0;
+	public static final int BLOCKED = 1;
+	protected int type;
 
+	protected BufferedImage image;
+	
 	public StaticGameEntity() {
 		super();
-		animation = new Animation();
+		
 	}
 
 	public void update() {
 
 		processInputs();
-
-		animation.update();
 
 		System.out.println(name + ": X " + x);
 		System.out.println(name + ": Y " + y);
@@ -46,9 +47,37 @@ public abstract class StaticGameEntity {
 
 	public void draw(Graphics2D g2d) {
 
-		g2d.drawImage(animation.getImage(), null, x, y);
+		g2d.drawImage(image, null, x, y);
 
 	}
+	
+	
+	public Rectangle getTopLine()
+	{
+		Rectangle topLine = new Rectangle(x, y, width, 0);
+		
+		return topLine;
+	}
+	
+	public Rectangle getBotLine()
+	{
+		Rectangle botLine = new Rectangle(x, y+height, width, 0);
+		
+		return botLine;
+	}
+	public Rectangle getLeftLine()
+	{
+		Rectangle leftLine = new Rectangle(x, y, 0, height);
+		
+		return leftLine;
+	}
+	public Rectangle getRightLine()
+	{
+		Rectangle rightLine = new Rectangle(x+width, y, 0, height);
+		
+		return rightLine;
+	}
+	
 
 	public boolean intersects(StaticGameEntity entity) {
 		Rectangle recThis = getCollisionBox();
@@ -97,6 +126,14 @@ public abstract class StaticGameEntity {
 		this.x = x;
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+	
 	public int getY() {
 		return y;
 	}
@@ -166,29 +203,4 @@ public abstract class StaticGameEntity {
 			return false;
 		return true;
 	}
-
-	public Animation getAnimation() {
-		return animation;
-	}
-
-	public void setAnimation(Animation animation) {
-		this.animation = animation;
-	}
-
-	public int getCurrentAction() {
-		return currentAction;
-	}
-
-	public void setCurrentAction(int currentAction) {
-		this.currentAction = currentAction;
-	}
-
-	public int getPreviousAction() {
-		return previousAction;
-	}
-
-	public void setPreviousAction(int previousAction) {
-		this.previousAction = previousAction;
-	}
-
 }

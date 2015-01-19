@@ -1,5 +1,7 @@
 package platformer.coop.entities;
 
+import java.awt.Graphics2D;
+
 public class DynamicGameEntity extends StaticGameEntity {
 
 	protected boolean isFacingRight;
@@ -12,13 +14,19 @@ public class DynamicGameEntity extends StaticGameEntity {
 	protected double moveSpeedIncreaseRate;
 	protected double fallSpeed;
 	protected double jumpSpeed;
-	private double jumpSpeedIncrease;
+	protected double jumpSpeedIncrease;
 	protected double jumpMax;
 
+	protected Animation animation;
+	protected int currentAction;
+	protected int previousAction;
+	
 	public DynamicGameEntity() {
 		super();
 
 		this.setMoveActions(new MoveActions());
+		setAnimation(new Animation());
+	
 
 	}
 
@@ -26,28 +34,31 @@ public class DynamicGameEntity extends StaticGameEntity {
 	public void update() {
 
 		move();
-		animation.update();
-		System.out.println(name + ": X " + x);
-		System.out.println(name + ": Y " + y);
+		getAnimation().update();
 
+	}
+	
+	@Override
+	public void draw(Graphics2D g2d) {
+		g2d.drawImage(animation.getImage(), null, x, y);
 	}
 
 	private void move() {
-		
-		moveSpeed = Math.min(moveSpeedMax, moveSpeed
-				+ moveSpeedIncreaseRate);
 
-		if (getMoveActions().isMovingRight()) {
-			x+=moveSpeed;
-		} else if (getMoveActions().isMovingLeft()) {
-			x-=moveSpeed;
-		} else {
-			if (moveSpeed < 0) {
-				moveSpeed = Math.min(moveSpeedSlowDownRate + moveSpeed, 0);
-			} else if (moveSpeed > 0) {
-				moveSpeed = Math.max(moveSpeedSlowDownRate - moveSpeed, 0);
+			if (getMoveActions().isMovingRight()) {
+				moveSpeed = Math.min(moveSpeedMax, moveSpeed
+						+ moveSpeedIncreaseRate);
+				x += moveSpeed;
+
+			} else if (getMoveActions().isMovingLeft()) {
+				moveSpeed = Math.min(moveSpeedMax, moveSpeed
+						+ moveSpeedIncreaseRate);
+				x -= moveSpeed;
+
+			} else {
+				moveSpeed = 0;
 			}
-		}
+			
 	}
 
 	public boolean isFacingRight() {
@@ -128,6 +139,30 @@ public class DynamicGameEntity extends StaticGameEntity {
 
 	public void setMoveActions(MoveActions moveActions) {
 		this.moveActions = moveActions;
+	}
+
+	public Animation getAnimation() {
+		return animation;
+	}
+
+	public void setAnimation(Animation animation) {
+		this.animation = animation;
+	}
+
+	public int getCurrentAction() {
+		return currentAction;
+	}
+
+	public void setCurrentAction(int currentAction) {
+		this.currentAction = currentAction;
+	}
+
+	public int getPreviousAction() {
+		return previousAction;
+	}
+
+	public void setPreviousAction(int previousAction) {
+		this.previousAction = previousAction;
 	}
 
 }
