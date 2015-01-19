@@ -121,7 +121,7 @@ public class QuadtreeTest {
 	@Before
 	public void initDefaultQuadtree() {
 		Rectangle bounds = new Rectangle(0, 0, 100, 100);
-		quadtree = new Quadtree(5, bounds);
+		quadtree = new Quadtree(0, bounds);
 
 		rectangleTopLeft = new Rectangle(0, 0, 10, 10);
 		rectangleTopRight = new Rectangle(90, 0, 10, 10);
@@ -140,6 +140,7 @@ public class QuadtreeTest {
 		Mockito.when(entityTopRight.getCollisionBox()).thenReturn(
 				rectangleTopRight);
 		Mockito.when(entityTopRight.getId()).thenReturn(0L);
+		
 
 		Mockito.when(entityBotRight.getCollisionBox()).thenReturn(
 				rectangleBotRight);
@@ -163,6 +164,6 @@ public class QuadtreeTest {
 
 	private void initEmptyQuadTree() {
 		initDefaultQuadtree();
-		quadtree.clear();
+		this.quadtree = new Quadtree(0, new Rectangle (0,0,100,100));
 	}
 }

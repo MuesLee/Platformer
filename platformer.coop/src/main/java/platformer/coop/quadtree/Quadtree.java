@@ -14,8 +14,8 @@ public class Quadtree {
 	private static final int BOTTOM_LEFT_QUADRANT = 2;
 	private static final int BOTTM_RIGHT_QUADRANT = 3;
 
-	private int MAX_OBJECTS = 5;
-	private int MAX_LEVELS = 3;
+	private static final int MAX_OBJECTS = 5;
+	private static final int MAX_LEVELS = 3;
 
 	private int level;
 	private List<StaticGameEntity> entities;
@@ -27,8 +27,13 @@ public class Quadtree {
 		entities = new ArrayList<StaticGameEntity>();
 		this.bounds = bounds;
 		nodes = new Quadtree[4];
+		
+		if(level < MAX_LEVELS)
+		{
+			split();
+		}
 	}
-
+	
 	public void clear() {
 		entities.clear();
 
@@ -55,40 +60,42 @@ public class Quadtree {
 		nodes[BOTTM_RIGHT_QUADRANT] = new Quadtree(level + 1, new Rectangle(x
 				+ halvedWidth, y + halvedHeight, halvedWidth, halvedHeight));
 
-		Iterator<StaticGameEntity> iterator = entities.iterator();
-		while (iterator.hasNext()) {
-			StaticGameEntity entity = iterator.next();
-			int index = getIndex(entity);
-			if (index != -1) {
-				nodes[index].insert(entity);
-				iterator.remove();
-			}
-		}
+//		Iterator<StaticGameEntity> iterator = entities.iterator();
+//		while (iterator.hasNext()) {
+//			StaticGameEntity entity = iterator.next();
+//			int index = getIndex(entity);
+//			if (index != -1) {
+//				nodes[index].insert(entity);
+//				iterator.remove();
+//			}
+//		}
 	}
 
 	/**
 	 * Gibt den Index des Quadranten zurück, in den das Rechteck passen würde.
 	 * Returns -1 wenn es nirgends vollständig hereinpasst.
 	 * 
-	 * @param entity
+	 * @param rectangle
 	 *            zu überprüfendes Rechteck
 	 * @return Index des Quadranten. -1 wenn es nicht vollständig in einen
 	 *         Quadranten passt.
 	 */
-	private int getIndex(StaticGameEntity entity) {
+	private int getIndex(StaticGameEntity entitiy) {
 		int index = -1;
 		double midpointX = bounds.getX() + (bounds.getWidth() / 2);
 		double midpointY = bounds.getY() + (bounds.getHeight() / 2);
 
+		Rectangle rectangle = entitiy.getCollisionBox();
+		
 		// Rechteck passt komplett in die obere Hälfte des Quadtrees
-		boolean topQuadrant = (entity.getY() < midpointY && entity.getY()
-				+ entity.getHeight() < midpointY);
+		boolean topQuadrant = (rectangle.getY() < midpointY && rectangle.getY()
+				+ rectangle.getHeight() < midpointY);
 		// Rechteck passt komplett in die untere Hälfte des Quadtrees
-		boolean bottomQuadrant = (entity.getY() > midpointY);
+		boolean bottomQuadrant = (rectangle.getY() > midpointY);
 
 		// Rechteck passt komplett in die linke Hälfte des Quadtrees
-		if (entity.getX() < midpointX
-				&& entity.getX() + entity.getWidth() < midpointX) {
+		if (rectangle.getX() < midpointX
+				&& rectangle.getX() + rectangle.getWidth() < midpointX) {
 			if (topQuadrant) {
 				index = TOP_LEFT_QUADRANT;
 			} else if (bottomQuadrant) {
@@ -96,7 +103,7 @@ public class Quadtree {
 			}
 		}
 		// Rechteck passt komplett in die rechte Hälfte des Quadtrees
-		else if (entity.getX() > midpointX) {
+		else if (rectangle.getX() > midpointX) {
 			if (topQuadrant) {
 				index = TOP_RIGHT_QUADRANT;
 			} else if (bottomQuadrant) {
@@ -108,8 +115,7 @@ public class Quadtree {
 	}
 
 	/**
-	 * Fügt das Rectangle in den Quadtree ein. Wenn die maximale Größe dadurch
-	 * überschritten wird, teilt sich der Quadtree.
+	 * Fügt eine Entity in den Quadtree ein.
 	 * 
 	 * @param rectangle
 	 */
@@ -117,20 +123,11 @@ public class Quadtree {
 
 		int index = getIndex(entity);
 
-		if (index != -1) {
-			if (nodes[index] == null) {
-				split();
-			}
+		if (index != -1 && nodes[index] != null) {
 			nodes[index].insert(entity);
 
 		} else {
 			entities.add(entity);
-		}
-
-		if (entities.size() > MAX_OBJECTS && level < MAX_LEVELS) {
-			if (nodes[0] == null) {
-				split();
-			}
 		}
 	}
 
@@ -155,9 +152,10 @@ public class Quadtree {
 
 		if (index == -1) {
 
+			returnObjects.addAll(entities);
+			
 			for (int i = 0; i < nodes.length; i++) {
 				if (nodes[i] != null) {
-					returnObjects.addAll(entities);
 					nodes[i].retrieve(returnObjects, entity);
 				}
 			}
@@ -165,6 +163,9 @@ public class Quadtree {
 		} else {
 			if (nodes[index] != null) {
 				nodes[index].retrieve(returnObjects, entity);
+			}
+			else {
+				returnObjects.addAll(entities);
 			}
 		}
 		return returnObjects;
