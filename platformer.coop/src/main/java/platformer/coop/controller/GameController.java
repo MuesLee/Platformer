@@ -2,23 +2,25 @@ package platformer.coop.controller;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import platformer.coop.controls.KeyBindings;
-import platformer.coop.entities.MoveActions;
 import platformer.coop.entities.Player;
-import platformer.coop.util.Clock;
-import platformer.coop.util.ClockListener;
 import platformer.coop.view.GameFrame;
 import platformer.coop.view.GamePanel;
 
-public class GameController implements ClockListener {
+public class GameController implements Runnable {
 
 	public static final String GAME_TITLE = "EPIC NAME";
 
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = 320;
 
-	private Clock clock;
+	private static final int UPS = 30;
+
+	private static final int FPS = 30;
+
+	private static final boolean RENDER_TIME = true;
 
 	private GameStateManager gameStateManager;
 
@@ -28,20 +30,19 @@ public class GameController implements ClockListener {
 
 	private ArrayList<Player> players;
 
+	private AtomicBoolean running = new AtomicBoolean(false);
+	private AtomicBoolean paused = new AtomicBoolean(false);
+
+	private GamePanel panel;
+
 	public GameController() {
 
 		setPlayers(new ArrayList<Player>());
 
-		Clock gameClock = new Clock(40);
-		Clock frameClock = new Clock(60);
-		setClock(gameClock);
-
 		setFrame(new GameFrame(GAME_TITLE));
-		final GamePanel gamePanel = new GamePanel(
-				GameStateManager.getInstance(this));
+		panel = new GamePanel(GameStateManager.getInstance(this));
 		getFrame().setLayout(new BorderLayout());
-		getFrame().add(gamePanel, BorderLayout.CENTER);
-		getFrame().setClock(frameClock);
+		getFrame().add(panel, BorderLayout.CENTER);
 		getFrame().pack();
 
 		Player playerOne = new Player(this, 1);
@@ -49,36 +50,91 @@ public class GameController implements ClockListener {
 		Player playerTwo = new Player(this, 2);
 		playerTwo.setName("Player Two");
 		getPlayers().add(playerOne);
-		keyBindings = new KeyBindings(gamePanel);
-		System.out.println("KEYB: " + playerOne.getMoveActions());
+		keyBindings = new KeyBindings(panel);
 		keyBindings.setPlayerOneInput(playerOne.getMoveActions());
 		keyBindings.setPlayerTwoInput(playerTwo.getMoveActions());
 		init();
 
-		gameClock.start();
-		frameClock.start();
 		getFrame().setVisible(true);
 	}
 
-	@Override
-	public void tick() {
+	public void startGameloop() {
+		running.set(true);
+		paused.set(false);
+		run();
+	}
+	
+	public void pauseGameloop ()
+	{
+		paused.set(true);
+	}
+	public void unpauseGameloop ()
+	{
+		paused.set(false);
+	}
+
+	public void stopGameloop() {
+		running.set(false);
+	}
+
+	public void run() {
+
+		long initialTime = System.nanoTime();
+		final double timeU = 1000000000 / UPS;
+		final double timeF = 1000000000 / FPS;
+		double deltaU = 0, deltaF = 0;
+		int frames = 0, ticks = 0;
+		long timer = System.currentTimeMillis();
+
+		while (running.get()) {
+
+			while (!paused.get()) {
+
+				long currentTime = System.nanoTime();
+				deltaU += (currentTime - initialTime) / timeU;
+				deltaF += (currentTime - initialTime) / timeF;
+				initialTime = currentTime;
+
+				if (deltaU >= 1) {
+					getInput();
+					update();
+					ticks++;
+					deltaU--;
+				}
+
+				if (deltaF >= 1) {
+					render();
+					frames++;
+					deltaF--;
+				}
+
+				if (System.currentTimeMillis() - timer > 1000) {
+					if (RENDER_TIME) {
+						System.out.println(String.format("UPS: %s, FPS: %s",
+								ticks, frames));
+					}
+					frames = 0;
+					ticks = 0;
+					timer += 1000;
+				}
+			}
+		}
+	}
+
+	private void update() {
 		gameStateManager.update();
 	}
 
-	public Clock getClock() {
-		return clock;
+	private void getInput() {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void setClock(Clock clk) {
-		if (this.clock != null) {
-			this.clock.removeClockListener(this);
-		}
-
-		this.clock = clk;
-		this.clock.addClockListener(this);
+	private void render() {
+		panel.repaint();
 	}
 
-	public void init() {
+	private void init() {
 		gameStateManager = GameStateManager.getInstance(this);
 		gameStateManager.init();
 	}
@@ -105,18 +161,5 @@ public class GameController implements ClockListener {
 
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
-	}
-
-	public MoveActions getInputForPlayer(int playerID) {
-
-		switch (playerID) {
-		case 1:
-			return keyBindings.getPlayerOneInput();
-		case 2:
-			return keyBindings.getPlayerTwoInput();
-		default:
-			return keyBindings.getPlayerOneInput();
-		}
-
 	}
 }

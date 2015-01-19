@@ -17,7 +17,7 @@ public abstract class AbstractGameState {
 
 	protected Quadtree quadtree;
 
-	private Camera camera;
+	protected Camera camera;
 
 	public AbstractGameState(GameStateManager manager) {
 		this.setManager(manager);
@@ -54,8 +54,10 @@ public abstract class AbstractGameState {
 	}
 
 	public void drawBackground(Graphics2D g2d) {
-		getBackground().draw(g2d);
-
+		if(background!= null)
+		{
+			getBackground().draw(g2d);
+		}
 	}
 
 	public Camera getCamera() {

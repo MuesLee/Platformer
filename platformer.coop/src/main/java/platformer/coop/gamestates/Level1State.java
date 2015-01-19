@@ -18,8 +18,6 @@ public class Level1State extends AbstractGameState {
 
 	@Override
 	public void draw(Graphics2D g2d) {
-		// super.getBackground().draw(g2d);
-
 		tileMap.draw(g2d);
 		for (Player player : players) {
 			player.draw(g2d);
@@ -28,8 +26,8 @@ public class Level1State extends AbstractGameState {
 
 	@Override
 	public void update() {
-		super.getBackground().update();
-		getCamera().update();
+		background.update();
+		camera.update();
 		for (Player player : players) {
 			player.update();
 		}
@@ -50,7 +48,6 @@ public class Level1State extends AbstractGameState {
 		int spawnBoxSize = 8;
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
-			player.setTileMap(tileMap);
 			player.setPosition(0 + spawnBoxSize * i, 0);
 		}
 

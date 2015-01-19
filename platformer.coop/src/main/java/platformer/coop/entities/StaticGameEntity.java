@@ -9,8 +9,6 @@ public abstract class StaticGameEntity {
 
 	private long id;
 
-	protected TileMap tileMap;
-
 	protected int x;
 	protected int y;
 
@@ -92,17 +90,6 @@ public abstract class StaticGameEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public TileMap getTileMap() {
-		return tileMap;
-	}
-
-	public void setTileMap(TileMap tileMap) {
-		this.tileMap = tileMap;
-		this.tileWidth = tileMap.getTileWidth();
-		this.tileHeight = tileMap.getTileHeight();
-
 	}
 
 	public int getX() {

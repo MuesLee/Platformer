@@ -2,7 +2,6 @@ package platformer.coop.quadtree;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import platformer.coop.entities.StaticGameEntity;

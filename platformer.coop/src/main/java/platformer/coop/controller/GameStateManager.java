@@ -2,6 +2,8 @@ package platformer.coop.controller;
 
 import java.awt.Graphics2D;
 
+import javax.swing.plaf.IconUIResource;
+
 import platformer.coop.gamestates.AbstractGameState;
 import platformer.coop.gamestates.GameState;
 import platformer.coop.gamestates.MenuState;
@@ -62,11 +64,15 @@ public class GameStateManager {
 	}
 
 	public void loadState(int number) {
+		gameController.pauseGameloop();
+		
 		GameState stateByNumber = GameState.getStateByNumber(number);
 		final AbstractGameState nextState = GameStateFactory.createGameState(
 				stateByNumber, getGameController());
-		currentState = nextState;
-		init();
+				currentState = nextState;
+				init();
+				
+		gameController.unpauseGameloop();
 	}
 
 	public GameController getGameController() {

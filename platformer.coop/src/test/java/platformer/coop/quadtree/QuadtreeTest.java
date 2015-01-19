@@ -163,7 +163,6 @@ public class QuadtreeTest {
 	}
 
 	private void initEmptyQuadTree() {
-		initDefaultQuadtree();
 		this.quadtree = new Quadtree(0, new Rectangle (0,0,100,100));
 	}
 }

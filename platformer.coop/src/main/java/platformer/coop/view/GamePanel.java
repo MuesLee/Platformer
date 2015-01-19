@@ -29,7 +29,6 @@ public class GamePanel extends JPanel {
 		this.setBackground(Color.RED);
 		this.setVisible(true);
 		setIgnoreRepaint(true);
-
 	}
 
 	@Override
@@ -47,6 +46,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void paintGameState(Graphics g) {
+		
 		Graphics2D g2d = (Graphics2D) g;
 		// clear screen
 		g2d.setColor(Color.BLACK);
@@ -61,7 +61,6 @@ public class GamePanel extends JPanel {
 		paintedArea.dispose();
 		g2d.drawImage(image, 0, 0, GameController.WIDTH, GameController.HEIGHT,
 				this);
-
 	}
 
 	public GameStateManager getGameStateManager() {
