@@ -3,7 +3,6 @@ package platformer.coop.entities;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import platformer.coop.tilemap.TileMap;
 
 public abstract class StaticGameEntity {
 
@@ -19,8 +18,6 @@ public abstract class StaticGameEntity {
 	protected int collisionBoxHeight;
 
 	protected String name;
-	private int tileWidth;
-	private int tileHeight;
 
 	protected Animation animation;
 	protected int currentAction;

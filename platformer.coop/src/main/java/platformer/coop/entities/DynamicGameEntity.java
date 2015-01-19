@@ -33,14 +33,14 @@ public class DynamicGameEntity extends StaticGameEntity {
 	}
 
 	private void move() {
+		
+		moveSpeed = Math.min(moveSpeedMax, moveSpeed
+				+ moveSpeedIncreaseRate);
 
 		if (getMoveActions().isMovingRight()) {
-			moveSpeed = Math.min(moveSpeedMax, moveSpeed
-					+ moveSpeedIncreaseRate);
+			x+=moveSpeed;
 		} else if (getMoveActions().isMovingLeft()) {
-			moveSpeed = Math.min(moveSpeedMax, moveSpeed
-					+ moveSpeedIncreaseRate);
-			moveSpeed *= -1;
+			x-=moveSpeed;
 		} else {
 			if (moveSpeed < 0) {
 				moveSpeed = Math.min(moveSpeedSlowDownRate + moveSpeed, 0);
@@ -48,8 +48,6 @@ public class DynamicGameEntity extends StaticGameEntity {
 				moveSpeed = Math.max(moveSpeedSlowDownRate - moveSpeed, 0);
 			}
 		}
-
-		x += moveSpeed;
 	}
 
 	public boolean isFacingRight() {
