@@ -1,6 +1,5 @@
 package platformer.coop.view;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -9,37 +8,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
-
 import javax.imageio.ImageIO;
-
 import platformer.coop.controller.GameController;
 import platformer.coop.entities.Tile;
 
 public class TileMap {
-
 	private int x;
 	private int y;
-
 	private int xmin;
 	private int ymin;
 	private int xmax;
 	private int ymax;
-
 	private int[][] map;
-
 	private int tileWidth;
 	private int tileHeight;
 	private int numRows;
 	private int numCols;
 	private int width;
 	private int height;
-
 	private BufferedImage tileSet;
 	private int numTilesAcross;
 	private Tile[][] tiles;
-
-	private BufferedImage renderedTileMap;
-
 	private int rowOffset;
 	private int colOffset;
 	private int numRowsToDraw;
@@ -47,12 +36,10 @@ public class TileMap {
 	private static Pattern pattern = Pattern.compile(Pattern.quote("||"));
 
 	public TileMap(int tileSize) {
-
 		this.setTileWidth(tileSize);
 		this.setTileHeight(tileSize);
-		numRowsToDraw = GameController.HEIGHT / tileSize;
-		numColsToDraw = GameController.WIDTH / tileSize;
-
+		numRowsToDraw = GameController.HEIGHT / tileSize + 2;
+		numColsToDraw = GameController.WIDTH / tileSize + 2;
 	}
 
 	public TileMap(int tileWidth, int tileHeight) {
@@ -66,140 +53,99 @@ public class TileMap {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		numTilesAcross = tileSet.getWidth() / getTileWidth();
 		tiles = new Tile[2][numTilesAcross];
-
 		BufferedImage subimage;
-
 		for (int i = 0; i < numTilesAcross; i++) {
-
 			subimage = tileSet.getSubimage(i * getTileWidth(), 0,
 					getTileWidth(), getTileHeight());
 			Tile normalTile = new Tile(subimage, Tile.NORMAL);
 			normalTile.setCollisionBox(new Rectangle());
 			tiles[0][i] = normalTile;
-
 			subimage = tileSet.getSubimage(i * getTileWidth(), getTileHeight(),
 					getTileWidth(), getTileHeight());
 			Tile blockedTile = new Tile(subimage, Tile.BLOCKED);
-			blockedTile.setWidth(tileWidth);
-			blockedTile.setHeight(tileHeight);
+			blockedTile.setCollisionBox(new Rectangle());
 			tiles[1][i] = blockedTile;
 		}
 	}
 
 	public void loadMap(String path) {
-
 		InputStream stream = ClassLoader.getSystemResourceAsStream(path);
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-
 		try {
 			numRows = Integer.parseInt(br.readLine());
 			numCols = Integer.parseInt(br.readLine());
 			map = new int[numRows][numCols];
 			width = numCols * getTileWidth();
 			height = numRows * getTileHeight();
-
 			for (int row = 0; row < numRows; row++) {
 				String line = br.readLine();
 				String[] split = pattern.split(line);
-
 				for (int col = 0; col < split.length; col++) {
 					map[row][col] = Integer.parseInt(split[col]);
 				}
 			}
-
 		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void renderTileMap() {
-		this.renderedTileMap = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_ARGB);
-
-		Graphics g = renderedTileMap.getGraphics();
-
-		int tileNumber = 0;
-
-		for (int row = 0; row < numRows; row++) {
-
-			for (int col = 0; col < numCols; col++) {
-
-				tileNumber = map[row][col];
-
-				if (tileNumber == 0)
-					continue;
-
-				g.drawImage(getImageForTileNumber(tileNumber),  col
-						* getTileWidth(), row * getTileHeight(), null);
-			}
-		}
-
-	}
-
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
-
 		fixBounds();
-
 		rowOffset = -this.y / getTileHeight();
 		colOffset = -this.x / getTileWidth();
 	}
 
 	public void draw(Graphics2D g2d) {
+		int tileNumber = 0;
 		for (int row = rowOffset; row < rowOffset + numRowsToDraw; row++) {
-
 			if (row >= numRows)
 				break;
-
 			for (int col = colOffset; col < colOffset + numColsToDraw; col++) {
-				
-				BufferedImage subimage = renderedTileMap.getSubimage(x, y,
-						numColsToDraw * tileWidth, numRowsToDraw * tileHeight);
-
-				g2d.drawImage(subimage,x,y, null);
+				if (col >= numCols)
+					break;
+				tileNumber = map[row][col];
+				if (tileNumber == 0)
+					continue;
+				tileNumber = map[row][col];
+				g2d.drawImage(getImageForTileNumber(tileNumber - 1), x + col
+						* getTileWidth(), y + row * getTileHeight(), null);
 			}
 		}
 	}
 
 	private BufferedImage getImageForTileNumber(int tileNumber) {
-		tileNumber--;
-
 		return tiles[getRowForTileNumber(tileNumber)][getColumnForTileNumber(tileNumber)]
 				.getImage();
-	}
-
-	public Rectangle getBounds() {
-		return new Rectangle(0, 0, width, height);
 	}
 
 	private void fixBounds() {
 		if (x > xmax) {
 			x = xmax;
 		}
-
 		if (x < xmin) {
 			x = xmin;
 		}
 		if (y > ymax) {
 			y = ymax;
 		}
-
 		if (y < ymin) {
 			y = ymin;
 		}
 	}
+	
+	public Rectangle getBounds()
+	{
+		return new Rectangle(0,0,width, height);
+	}
 
 	public int getType(int row, int column) {
-
 		int tileNumber = map[row][column];
-
 		int tileRow = getRowForTileNumber(tileNumber);
 		int tileColumn = getColumnForTileNumber(tileNumber);
-
 		return tiles[tileRow][tileColumn].getType();
 	}
 
@@ -372,13 +318,4 @@ public class TileMap {
 	public void setTileHeight(int tileHeight) {
 		this.tileHeight = tileHeight;
 	}
-
-	public BufferedImage getRenderedTileMap() {
-		return renderedTileMap;
-	}
-
-	public void setRenderedTileMap(BufferedImage renderedTileMap) {
-		this.renderedTileMap = renderedTileMap;
-	}
-
 }

@@ -30,7 +30,6 @@ public class Level1State extends AbstractGameLevelState {
 		tileMap = new TileMap(30);
 		tileMap.loadTiles("Tiles/grass_flowers_30.png");
 		tileMap.loadMap("Maps/level1.map");
-		tileMap.renderTileMap();
 		tileMap.setPosition(0, 0);
 
 		int spawnBoxSize = 8;

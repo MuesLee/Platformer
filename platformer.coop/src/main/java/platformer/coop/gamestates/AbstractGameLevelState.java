@@ -2,14 +2,12 @@ package platformer.coop.gamestates;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import platformer.coop.collision.Collision;
 import platformer.coop.collision.CollisionManager;
 import platformer.coop.entities.Enemy;
 import platformer.coop.entities.Player;
-import platformer.coop.entities.StaticGameEntity;
 import platformer.coop.view.Camera;
 import platformer.coop.view.TileMap;
 
