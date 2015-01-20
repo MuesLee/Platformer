@@ -1,7 +1,6 @@
 package platformer.coop.collision;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -100,6 +99,97 @@ public class QuadtreeTest {
 		expected.add(entityTopRight);
 		assertTrue(CollectionUtils.isEqualCollection(expected, actual));
 	}
+	
+	@Test
+	public void testInsertShouldInsertAt0() throws Exception {
+		
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,1);
+		
+		Rectangle givenRectangle = new Rectangle(0,0,160,160);
+		Mockito.when(givenEntity.getCollisionBox()).thenReturn(givenRectangle);
+		Mockito.when(givenEntity.getId()).thenReturn(3L);
+		
+		quadtree.insert(givenEntity);
+		
+		String expected = "X";
+		String actual = quadtree.getPath(givenEntity);
+		assertEquals(expected, actual);
+	}
+	@Test
+	public void testInsertShouldInsertAt1() throws Exception {
+		
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,1);
+		
+		Rectangle givenRectangle = new Rectangle(0,0,39,39);
+		Mockito.when(givenEntity.getCollisionBox()).thenReturn(givenRectangle);
+		Mockito.when(givenEntity.getId()).thenReturn(3L);
+		
+		quadtree.insert(givenEntity);
+		
+		String expected = "1X";
+		String actual = quadtree.getPath(givenEntity);
+		assertEquals(expected, actual);
+	}
+	@Test
+	public void testInsertShouldInsertAt11() throws Exception {
+		
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,2);
+		
+		Rectangle givenRectangle = new Rectangle(0,0,1,1);
+		Mockito.when(givenEntity.getCollisionBox()).thenReturn(givenRectangle);
+		Mockito.when(givenEntity.getId()).thenReturn(3L);
+		
+		quadtree.insert(givenEntity);
+		
+		String expected = "11X";
+		String actual = quadtree.getPath(givenEntity);
+		assertEquals(expected, actual);
+	}
+	@Test
+	public void testInsertShouldInsertAt10() throws Exception {
+		
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,2);
+		
+		Rectangle givenRectangle = new Rectangle(41,39,1,1);
+		Mockito.when(givenEntity.getCollisionBox()).thenReturn(givenRectangle);
+		Mockito.when(givenEntity.getId()).thenReturn(3L);
+		
+		quadtree.insert(givenEntity);
+		
+		String expected = "10X";
+		String actual = quadtree.getPath(givenEntity);
+		assertEquals(expected, actual);
+	}
+	@Test
+	public void testInsertShouldInsertAt13() throws Exception {
+		
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,2);
+		
+		Rectangle givenRectangle = new Rectangle(41,41,1,1);
+		Mockito.when(givenEntity.getCollisionBox()).thenReturn(givenRectangle);
+		Mockito.when(givenEntity.getId()).thenReturn(3L);
+		
+		quadtree.insert(givenEntity);
+		
+		String expected = "13X";
+		String actual = quadtree.getPath(givenEntity);
+		assertEquals(expected, actual);
+	}
+	@Test
+	public void testInsertShouldInsertAt1_2() throws Exception {
+		
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,2);
+		
+		Rectangle givenRectangle = new Rectangle(39,41,1,1);
+		Mockito.when(givenEntity.getCollisionBox()).thenReturn(givenRectangle);
+		Mockito.when(givenEntity.getId()).thenReturn(3L);
+		
+		quadtree.insert(givenEntity);
+		
+		String expected = "1X";
+		String actual = quadtree.getPath(givenEntity);
+		assertEquals(expected, actual);
+	}
 
 	@Test
 	public void shouldClearDefaultQuadtree() throws Exception {
@@ -111,7 +201,7 @@ public class QuadtreeTest {
 	@Test
 	public void shouldNotRetunAnyCollisions() throws Exception {
 
-		initEmptyQuadTree();
+		initEmptyQuadTree(new Rectangle (0,0,160,160),5,1);
 
 		quadtree.insert(entityTopRight);
 		List<StaticGameEntity> actual = quadtree.retrieve(null, entityBotLeft);
@@ -122,7 +212,7 @@ public class QuadtreeTest {
 	@Before
 	public void initDefaultQuadtree() {
 		Rectangle bounds = new Rectangle(0, 0, 100, 100);
-		quadtree = new Quadtree(0, bounds);
+		quadtree = new Quadtree(0, bounds,5,2);
 
 		rectangleTopLeft = new Rectangle(0, 0, 10, 10);
 		rectangleTopRight = new Rectangle(90, 0, 10, 10);
@@ -163,7 +253,7 @@ public class QuadtreeTest {
 		quadtree.insert(entityBotRight);
 	}
 
-	private void initEmptyQuadTree() {
-		this.quadtree = new Quadtree(0, new Rectangle (0,0,100,100));
+	private void initEmptyQuadTree(Rectangle bounds, int maxObjects, int maxLevels) {
+		this.quadtree = new Quadtree(0, bounds, maxObjects, maxLevels);
 	}
 }

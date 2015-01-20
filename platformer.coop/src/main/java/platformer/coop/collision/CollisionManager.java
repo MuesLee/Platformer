@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import platformer.coop.controller.GameController;
 import platformer.coop.entities.DynamicGameEntity;
 import platformer.coop.entities.StaticGameEntity;
 import platformer.coop.gamestates.AbstractGameLevelState;
@@ -16,13 +15,10 @@ public class CollisionManager {
 
 	private Quadtree staticQuadtree;
 	
-	private GameController gameController;
-
 	private AbstractGameLevelState gameState;
 
 	public CollisionManager(AbstractGameLevelState gameState) {
 
-		this.gameController = GameController.getInstance();
 		this.gameState = gameState;
 	}
 	
@@ -46,7 +42,7 @@ public class CollisionManager {
 	
 
 	private Quadtree createNewQuadtree(Rectangle bounds) {
-		return new Quadtree(0, bounds);
+		return new Quadtree(0, bounds,5,3);
 	}
 
 	/**
@@ -101,10 +97,7 @@ public class CollisionManager {
 
 		for (StaticGameEntity other : possibleCollisions) {
 
-			// Rectangle otherBotLine = entity.getBotLine();
-			// Rectangle otherTopLine = entity.getTopLine();
-			// Rectangle otherLeftLine = entity.getLeftLine();
-			// Rectangle otherRightLine = entity.getRightLine();
+	
 			//
 			if (other.intersects(entityTopLine)) {
 				collidedEntities.add (new Collision(other, CollisionSide.TOP));

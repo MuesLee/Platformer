@@ -16,7 +16,7 @@ public class DynamicGameEntityTest {
 
 	@Before
 	public void init() throws Exception {
-		this.classUnderTest = new DynamicGameEntity();
+		this.classUnderTest = new Enemy();
 		
 		classUnderTest.setMoveSpeedMax(15);
 		classUnderTest.setMoveSpeedIncreaseRate(5);

@@ -7,9 +7,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.imageio.ImageIO;
+
 import platformer.coop.controller.GameController;
+import platformer.coop.entities.Enviroment;
+import platformer.coop.entities.StaticGameEntity;
 import platformer.coop.entities.Tile;
 
 public class TileMap {
@@ -34,7 +40,7 @@ public class TileMap {
 	private int numRowsToDraw;
 	private int numColsToDraw;
 	private static Pattern pattern = Pattern.compile(Pattern.quote("||"));
-
+	
 	public TileMap(int tileSize) {
 		this.setTileWidth(tileSize);
 		this.setTileHeight(tileSize);
@@ -45,6 +51,35 @@ public class TileMap {
 	public TileMap(int tileWidth, int tileHeight) {
 		this.tileHeight = tileHeight;
 		this.tileWidth = tileWidth;
+	}
+	
+	public List<StaticGameEntity> computeStaticGameEntitiesForTiles ()
+	{
+		List<StaticGameEntity> entities = new ArrayList<>();
+		
+		int tileNumber = 0;
+		for (int row = 0; row < numRows; row++) {
+			
+			for (int col = 0; col < numCols; col++) {
+				
+				tileNumber = map[row][col];
+				if (tileNumber == 0)
+					continue;
+				int type = tiles[getRowForTileNumber(tileNumber)][getColumnForTileNumber(tileNumber)].getType();
+				
+				if(type == Tile.BLOCKED)
+				{
+					Enviroment env = new Enviroment();
+					env.setHeight(tileHeight);
+					env.setWidth(tileWidth);
+					env.setX(col * tileWidth);
+					env.setY(row * tileHeight);
+					entities.add(env);
+				}
+			}
+		}
+		
+		return entities;
 	}
 
 	public void loadTiles(String path) {
@@ -60,12 +95,10 @@ public class TileMap {
 			subimage = tileSet.getSubimage(i * getTileWidth(), 0,
 					getTileWidth(), getTileHeight());
 			Tile normalTile = new Tile(subimage, Tile.NORMAL);
-			normalTile.setCollisionBox(new Rectangle());
 			tiles[0][i] = normalTile;
 			subimage = tileSet.getSubimage(i * getTileWidth(), getTileHeight(),
 					getTileWidth(), getTileHeight());
 			Tile blockedTile = new Tile(subimage, Tile.BLOCKED);
-			blockedTile.setCollisionBox(new Rectangle());
 			tiles[1][i] = blockedTile;
 		}
 	}

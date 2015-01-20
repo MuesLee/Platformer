@@ -2,7 +2,10 @@ package platformer.coop.entities;
 
 import java.awt.Graphics2D;
 
-public class DynamicGameEntity extends StaticGameEntity {
+import platformer.coop.collision.Collision;
+import platformer.coop.collision.CollisionSide;
+
+public abstract class DynamicGameEntity extends StaticGameEntity {
 
 	protected boolean isFacingRight;
 	protected boolean standsOnSolidGround;
@@ -92,6 +95,17 @@ public class DynamicGameEntity extends StaticGameEntity {
 				setFallSpeed(0);
 			}
 		}
+	}
+	
+	@Override
+	public void handleCollision(Collision collision) {
+		super.handleCollision(collision);
+		
+		if(collision.getSideCollidedEntityHitsIn() == CollisionSide.BOT)
+		{
+			this.standsOnSolidGround = true;
+		}
+		
 	}
 
 	public boolean isFacingRight() {

@@ -1,9 +1,6 @@
 package platformer.coop.gamestates;
 
-import java.util.Collections;
-
 import platformer.coop.entities.Player;
-import platformer.coop.entities.StaticGameEntity;
 import platformer.coop.view.Background;
 import platformer.coop.view.Camera;
 import platformer.coop.view.TileMap;
@@ -39,9 +36,8 @@ public class Level1State extends AbstractGameLevelState {
 		}
 
 		setCamera(new Camera(getPlayers(), tileMap, 1.0));
-		collisionManager.initStaticQuadtree(tileMap.getBounds(), Collections.<StaticGameEntity> emptyList());
+		collisionManager.initStaticQuadtree(tileMap.getBounds(), tileMap.computeStaticGameEntitiesForTiles());
 		collisionManager.initDynamicQuadtree();
-		
 	}
 
 }

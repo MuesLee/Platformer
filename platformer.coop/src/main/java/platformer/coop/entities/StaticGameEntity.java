@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import platformer.coop.collision.Collision;
+import platformer.coop.controller.GameController;
 
 
 public abstract class StaticGameEntity {
@@ -17,19 +18,14 @@ public abstract class StaticGameEntity {
 	protected int width;
 	protected int height;
 
-	protected int collisionBoxWidth;
-	protected int collisionBoxHeight;
-
 	protected String name;
-
-	public static final int NORMAL = 0;
-	public static final int BLOCKED = 1;
-	protected int type;
 
 	protected BufferedImage image;
 	
 	public StaticGameEntity() {
 		super();
+		
+		id = GameController.getNextIDForEntity();
 		
 	}
 
@@ -93,8 +89,8 @@ public abstract class StaticGameEntity {
 	}
 
 	public Rectangle getCollisionBox() {
-		return new Rectangle(x - collisionBoxWidth, y - collisionBoxHeight,
-				collisionBoxWidth, collisionBoxHeight);
+		return new Rectangle(x - width, y - height,
+				width, height);
 	}
 
 	public boolean intersects(Rectangle r) {
@@ -131,14 +127,6 @@ public abstract class StaticGameEntity {
 	public void setX(int x) {
 		this.x = x;
 	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
 	
 	public int getY() {
 		return y;
@@ -162,22 +150,6 @@ public abstract class StaticGameEntity {
 
 	public void setHeight(int height) {
 		this.height = height;
-	}
-
-	public int getCollisionBoxWidth() {
-		return collisionBoxWidth;
-	}
-
-	public void setCollisionBoxWidth(int collisionBoxWidth) {
-		this.collisionBoxWidth = collisionBoxWidth;
-	}
-
-	public int getCollisionBoxHeight() {
-		return collisionBoxHeight;
-	}
-
-	public void setCollisionBoxHeight(int collisionBoxHeight) {
-		this.collisionBoxHeight = collisionBoxHeight;
 	}
 
 	public long getId() {

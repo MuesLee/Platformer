@@ -37,6 +37,8 @@ public class GameController implements Runnable {
 	private AtomicBoolean paused = new AtomicBoolean(false);
 
 	private GamePanel panel;
+	
+	private static long nextEntityID = 0l;
 
 	private GameController() {
 
@@ -133,6 +135,11 @@ public class GameController implements Runnable {
 
 	}
 
+	public static long getNextIDForEntity ()
+	{
+		return nextEntityID++;
+	}
+	
 	public static GameController getInstance()
 	{
 		if(gameController == null)
