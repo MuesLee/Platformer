@@ -39,6 +39,7 @@ public class Camera {
 		}
 
 		this.x = Math.max(0, xMax - viewWidth / 2);
+		this.x = Math.min(tileMap.getWidth() - viewWidth / 2, x);
 		this.tileMap.setPosition(x, y);
 	}
 	
