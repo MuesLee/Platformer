@@ -1,7 +1,7 @@
 package platformer.coop.collision;
 
 import java.awt.Rectangle;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 import platformer.coop.controller.GameController;
@@ -84,10 +84,10 @@ public class CollisionManager {
 	 * @param entity
 	 * @return Zuordnung berührter Objekte und der Seite, mit der dieses Objekt berührt wurde.
 	 */
-	public HashMap<StaticGameEntity, CollisionSide> retrieveCollisions(
+	public List<Collision> retrieveCollisions(
 			StaticGameEntity entity) {
 
-		HashMap<StaticGameEntity, CollisionSide> collidedEntities = new HashMap<>();
+		List<Collision> collidedEntities = new ArrayList<>();
 
 		List<StaticGameEntity> possibleCollisions = dynamicQuadtree.retrieve(null,
 				entity);
@@ -107,15 +107,15 @@ public class CollisionManager {
 			// Rectangle otherRightLine = entity.getRightLine();
 			//
 			if (other.intersects(entityTopLine)) {
-				collidedEntities.put(other, CollisionSide.TOP);
+				collidedEntities.add (new Collision(other, CollisionSide.TOP));
 			} else if (other.intersects(entityBotLine)) {
-				collidedEntities.put(other, CollisionSide.BOT);
+				collidedEntities.add (new Collision(other, CollisionSide.BOT));
 				
 			} else if (other.intersects(entityRightLine)) {
-				collidedEntities.put(other, CollisionSide.RIGHT);
+				collidedEntities.add (new Collision(other, CollisionSide.RIGHT));
 				
 			} else if (other.intersects(entityLeftLine)) {
-				collidedEntities.put(other, CollisionSide.LEFT);
+				collidedEntities.add (new Collision(other, CollisionSide.LEFT));
 			}
 		}
 

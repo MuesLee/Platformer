@@ -3,12 +3,8 @@ package platformer.coop.gamestates;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import platformer.coop.collision.CollisionManager;
-import platformer.coop.collision.Quadtree;
-import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Player;
 import platformer.coop.view.Background;
-import platformer.coop.view.Camera;
 
 public abstract class AbstractGameState {
 

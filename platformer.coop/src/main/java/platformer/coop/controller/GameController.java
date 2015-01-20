@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import platformer.coop.controls.KeyBindings;
 import platformer.coop.entities.Player;
+import platformer.coop.gamestates.GameStateManager;
 import platformer.coop.view.GameFrame;
 import platformer.coop.view.GamePanel;
 

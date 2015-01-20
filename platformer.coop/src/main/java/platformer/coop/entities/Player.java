@@ -29,7 +29,10 @@ public class Player extends DynamicGameEntity {
 		setMoveSpeedIncreaseRate(5);
 		setMoveSpeedMax(15);
 		setJumpSpeedIncrease(2);
+		setJumpSpeedMax(7);
 		setMoveSpeedSlowDownRate(7.5);
+		setFallSpeedIncreaseRate(1);
+		setFallSpeedMax(5);
 		this.setGameController(gameController);
 
 		BufferedImage spritesheet;
@@ -55,6 +58,11 @@ public class Player extends DynamicGameEntity {
 
 	}
 
+	@Override
+	public void update() {
+		super.update();
+	}
+	
 	private void setAnimation(int i) {
 		setCurrentAction(i);
 		animation.setFrames(sprites.get(getCurrentAction()));

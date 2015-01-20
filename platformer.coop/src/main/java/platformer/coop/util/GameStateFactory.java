@@ -1,9 +1,9 @@
 package platformer.coop.util;
 
 import platformer.coop.controller.GameController;
-import platformer.coop.controller.GameStateManager;
 import platformer.coop.gamestates.AbstractGameState;
 import platformer.coop.gamestates.GameState;
+import platformer.coop.gamestates.GameStateManager;
 import platformer.coop.gamestates.Level1State;
 import platformer.coop.gamestates.MenuState;
 

@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import platformer.coop.collision.Collision;
+
 
 public abstract class StaticGameEntity {
 
@@ -78,7 +80,11 @@ public abstract class StaticGameEntity {
 		return rightLine;
 	}
 	
-
+	public void handleCollision(Collision collision)
+	{
+		
+	}
+	
 	public boolean intersects(StaticGameEntity entity) {
 		Rectangle recThis = getCollisionBox();
 		Rectangle recOther = entity.getCollisionBox();

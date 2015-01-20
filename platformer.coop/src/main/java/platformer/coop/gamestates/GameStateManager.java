@@ -1,14 +1,9 @@
-package platformer.coop.controller;
+package platformer.coop.gamestates;
 
 import java.awt.Graphics2D;
 
-import javax.swing.plaf.IconUIResource;
-
-import platformer.coop.gamestates.AbstractGameState;
-import platformer.coop.gamestates.GameState;
-import platformer.coop.gamestates.MenuState;
+import platformer.coop.controller.GameController;
 import platformer.coop.util.GameStateFactory;
-import platformer.coop.view.Camera;
 
 public class GameStateManager {
 
@@ -39,6 +34,9 @@ public class GameStateManager {
 		AbstractGameState currentGameState = getCurrentState();
 		currentGameState.setPlayers(gameController.getPlayers());
 		currentGameState.init();
+		
+		System.out.println(currentGameState);
+		System.out.println("########## MANAGER INIT GAME STATE #############");
 	}
 
 	public void draw(Graphics2D g) {

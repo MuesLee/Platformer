@@ -1,5 +1,6 @@
 package platformer.coop.view;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -36,6 +37,8 @@ public class TileMap {
 	private BufferedImage tileSet;
 	private int numTilesAcross;
 	private Tile[][] tiles;
+	
+	private BufferedImage renderedTileMap;
 
 	private int rowOffset;
 	private int colOffset;
@@ -80,10 +83,10 @@ public class TileMap {
 			subimage = tileSet.getSubimage(i * getTileWidth(), getTileHeight(),
 					getTileWidth(), getTileHeight());
 			Tile blockedTile = new Tile(subimage, Tile.BLOCKED);
-			blockedTile.setCollisionBox(new Rectangle());
+			blockedTile.setWidth(tileWidth);
+			blockedTile.setHeight(tileHeight);
 			tiles[1][i] = blockedTile;
 		}
-
 	}
 
 	public void loadMap(String path) {
@@ -112,6 +115,33 @@ public class TileMap {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public void renderTileMap()
+	{
+		this.renderedTileMap = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
+		
+		Graphics g = renderedTileMap.getGraphics();
+		
+		int tileNumber = 0;
+
+		for (int row = 0; row < numRows; row++) {
+
+			for (int col = 0; col < numCols; col++) {
+
+				tileNumber = map[row][col];
+
+				if (tileNumber == 0)
+					continue;
+
+				g.drawImage(getImageForTileNumber(tileNumber - 1), x + col
+						* getTileWidth(), y + row * getTileHeight(), null);
+			}
+		}
+		
+		
+	}
+	
 
 	public void setPosition(int x, int y) {
 		this.x = x;
@@ -153,6 +183,11 @@ public class TileMap {
 				.getImage();
 	}
 
+	public Rectangle getBounds()
+	{
+		return new Rectangle(0,0,width, height);
+	}
+	
 	private void fixBounds() {
 		if (x > xmax) {
 			x = xmax;
@@ -349,6 +384,14 @@ public class TileMap {
 
 	public void setTileHeight(int tileHeight) {
 		this.tileHeight = tileHeight;
+	}
+
+	public BufferedImage getRenderedTileMap() {
+		return renderedTileMap;
+	}
+
+	public void setRenderedTileMap(BufferedImage renderedTileMap) {
+		this.renderedTileMap = renderedTileMap;
 	}
 
 }

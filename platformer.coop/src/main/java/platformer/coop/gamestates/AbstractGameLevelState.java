@@ -2,12 +2,14 @@ package platformer.coop.gamestates;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import platformer.coop.collision.Collision;
 import platformer.coop.collision.CollisionManager;
-import platformer.coop.controller.GameStateManager;
 import platformer.coop.entities.Enemy;
 import platformer.coop.entities.Player;
-import platformer.coop.entities.Tile;
+import platformer.coop.entities.StaticGameEntity;
 import platformer.coop.view.Camera;
 import platformer.coop.view.TileMap;
 
@@ -64,20 +66,23 @@ public class AbstractGameLevelState extends AbstractGameState {
 		for (Enemy enemy : enemies) {
 			enemy.update();
 		}
+		computeCollisions();
+	}
 
+	private void computeCollisions() {
+		for (Player player : players) {
+			List<Collision> collisions = collisionManager.retrieveCollisions(player);
+		
+			for (Collision collision : collisions) {
+				
+				player.handleCollision(collision);
+			}
+		}
 	}
 
 	@Override
 	public void init() {
-
-		Tile[][] tiles = tileMap.getTiles();
-
-		for (Tile[] tiles2 : tiles) {
-			for (Tile tile : tiles2) {
-				collisionManager.addStaticEntity(tile);
-			}
-		}
-
+		
 	}
 
 	public Camera getCamera() {

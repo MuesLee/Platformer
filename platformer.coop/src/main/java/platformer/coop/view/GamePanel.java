@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import platformer.coop.controller.GameController;
-import platformer.coop.controller.GameStateManager;
+import platformer.coop.gamestates.GameStateManager;
 
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = -2414643643356712734L;

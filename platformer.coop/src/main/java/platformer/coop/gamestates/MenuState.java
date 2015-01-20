@@ -7,9 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import platformer.coop.controller.GameController;
-import platformer.coop.controller.GameStateManager;
 import platformer.coop.view.Background;
-import platformer.coop.view.Camera;
 
 public class MenuState extends AbstractGameState implements KeyListener {
 
