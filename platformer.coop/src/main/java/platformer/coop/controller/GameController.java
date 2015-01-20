@@ -19,7 +19,7 @@ public class GameController implements Runnable {
 
 	private static final int UPS = 30;
 
-	private static final int FPS = 30;
+	private static final int FPS = 60;
 
 	private static final boolean RENDER_TIME = true;
 
