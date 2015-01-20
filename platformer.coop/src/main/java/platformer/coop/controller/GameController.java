@@ -14,8 +14,8 @@ public class GameController implements Runnable {
 
 	public static final String GAME_TITLE = "EPIC NAME";
 
-	public static final int WIDTH = 640;
-	public static final int HEIGHT = 320;
+	public static final int WIDTH = 660;
+	public static final int HEIGHT = 330;
 
 	private static final int UPS = 30;
 
