@@ -1,9 +1,14 @@
 package platformer.coop.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import de.ts.gameengine.entities.Animation;
+import de.ts.gameengine.entities.DynamicGameEntity;
+import de.ts.gameengine.entities.Enemy;
+import de.ts.gameengine.entities.MoveActions;
 
 public class DynamicGameEntityTest {
 

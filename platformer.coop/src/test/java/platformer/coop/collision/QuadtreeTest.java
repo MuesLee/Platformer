@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import platformer.coop.collision.Quadtree;
-import platformer.coop.entities.StaticGameEntity;
+import de.ts.gameengine.collision.Quadtree;
+import de.ts.gameengine.entities.StaticGameEntity;
 
 public class QuadtreeTest {
 

@@ -1,15 +1,18 @@
 package platformer.coop.gamestates;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import platformer.coop.controller.GameController;
-import platformer.coop.view.Background;
+import de.ts.gameengine.controller.GameController;
+import de.ts.gameengine.gamestates.DefaultMenuState;
+import de.ts.gameengine.gamestates.GameStateManager;
+import de.ts.gameengine.view.Background;
 
-public class MenuState extends AbstractGameState implements KeyListener {
+public class MainMenuState extends DefaultMenuState implements KeyListener {
 
 	private Font titleFont;
 	private Font font;
@@ -20,10 +23,10 @@ public class MenuState extends AbstractGameState implements KeyListener {
 	private String[] menuItems = { "Start", "Exit" };
 
 	private int selectedMenuItem = 0;
+	private GameStateManager manager;
 
-	public MenuState(GameStateManager manager) {
-		super(manager);
-
+	public MainMenuState() {
+		super();
 		titleFont = new Font("Showcard Gothic", Font.BOLD, 64);
 		font = new Font("Verdana", Font.PLAIN, 18);
 
@@ -101,9 +104,14 @@ public class MenuState extends AbstractGameState implements KeyListener {
 	}
 
 	private void startLevel1() {
-		final GameStateManager manager = getManager();
-		manager.loadState(1);
-		manager.getGameController().getFrame().removeKeyListener(this);
+		getManager().loadState(1);
+		getManager().getGameController().getFrame().removeKeyListener(this);
+	}
+	
+	
+	public void addKeyListenerToComponent(Component component)
+	{
+		component.addKeyListener(this);
 	}
 
 	@Override
@@ -114,5 +122,13 @@ public class MenuState extends AbstractGameState implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent key) {
 
+	}
+
+	public GameStateManager getManager() {
+		return manager;
+	}
+
+	public void setManager(GameStateManager manager) {
+		this.manager = manager;
 	}
 }
