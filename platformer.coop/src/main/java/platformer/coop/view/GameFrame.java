@@ -7,6 +7,7 @@ import platformer.coop.util.ClockListener;
 
 public class GameFrame extends JFrame implements ClockListener
 {
+	private static final long serialVersionUID = 1375427756283256178L;
 	private Clock clock;
 
 	public GameFrame(String title)

@@ -14,6 +14,7 @@ public class KeyBindings {
 	private MoveActions playerOneInput = new MoveActions();
 	private MoveActions playerTwoInput = new MoveActions();
 
+	@SuppressWarnings("serial")
 	public KeyBindings(JComponent gp) {
 		// PLAYER TWO
 
