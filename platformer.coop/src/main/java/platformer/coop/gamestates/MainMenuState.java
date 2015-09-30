@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import de.ts.gameengine.controller.GameController;
-import de.ts.gameengine.gamestates.DefaultMenuState;
 import de.ts.gameengine.gamestates.GameStateManager;
+import de.ts.gameengine.gamestates.menu.DefaultMenuState;
 import de.ts.gameengine.view.Background;
 
 public class MainMenuState extends DefaultMenuState implements KeyListener {

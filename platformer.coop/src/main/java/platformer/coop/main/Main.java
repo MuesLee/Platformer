@@ -13,6 +13,5 @@ public class Main
 		controller.init();
 		Thread t1 = new Thread(controller);
 		t1.start();
-		controller.startGameloop();
 	}
 }

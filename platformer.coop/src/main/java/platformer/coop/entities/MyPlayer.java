@@ -8,12 +8,13 @@ import javax.imageio.ImageIO;
 
 import de.ts.gameengine.controller.GameController;
 import de.ts.gameengine.entities.Player;
+import de.ts.gameengine.entities.movement.GameInputHandler;
 
 public class MyPlayer extends Player {
 
 
-	public MyPlayer(GameController gameController, int playerID) {
-		super(gameController, playerID);
+	public MyPlayer(GameController gameController,GameInputHandler gameInputHandler, int playerID) {
+		super(gameController,gameInputHandler, playerID);
 	}
 
 	@Override

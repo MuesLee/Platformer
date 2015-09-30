@@ -1,12 +1,12 @@
 package platformer.coop.gamestates;
 
 import de.ts.gameengine.entities.Player;
-import de.ts.gameengine.gamestates.AbstractGameLevelState;
+import de.ts.gameengine.gamestates.AbstractGameLevel;
 import de.ts.gameengine.view.Background;
 import de.ts.gameengine.view.Camera;
 import de.ts.gameengine.view.TileMap;
 
-public class Level1State extends AbstractGameLevelState {
+public class Level1State extends AbstractGameLevel {
 
 	public Level1State() {
 		super();
